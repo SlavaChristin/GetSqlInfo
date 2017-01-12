@@ -1,0 +1,38 @@
+<SqlServerInfo name="xxx" collectedAt="2017-01-01T11:00:00" scriptVersion="1.0" collectedBy="schristin">
+  <QueryResults name="xx">
+    <Row>
+      <Property  name="xxx">value</Property>
+      <Property  name="xxx">value</Property>
+      <Property  name="xxx">value</Property>
+      <Property  name="xxx"><![CDATA[value]]></Property>
+      <Property  name="xxx"><![CDATA[value]]></Property>
+      <Property  name="xxx"><![CDATA[value]]></Property>
+    </Row>
+    <Row>
+    </Row>
+    <Row>
+    </Row>
+    <Row>
+    </Row>
+  </QueryResults>
+  <QueryResults name="xx">
+  </QueryResults>
+  <QueryResults name="xx">
+  </QueryResults>
+
+  <DatabaseInfo name="xxx">
+    <QueryResults name="xx">
+      <Row>
+        <Property  name="xxx">value</Property>
+        <Property  name="xxx">value</Property>
+        <Property  name="xxx">value</Property>
+        <Property  name="xxx"><![CDATA[value]]></Property>
+      </Row>
+    </QueryResults>
+    <QueryResults name="xx">
+      <Message>cannot run a query</Message>
+    </QueryResults>
+  </DatabaseInfo>
+  <DatabaseInfo name="xxxy">
+  </DatabaseInfo>
+</SqlServerInfo>

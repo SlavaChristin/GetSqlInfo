@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SqlServerInfo" type="SqlServerInfo" nillable="true" />
+
+  <xs:complexType name="SqlServerInfo">
+    <xs:sequence>
+      <xs:element name="QueryResults"  type="QueryResults" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="DatabaseInfo"  type="DatabaseInfo" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="Message"       type="xs:string"    minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+
+    <xs:attribute name="name"          type="xs:string"   use="required" />
+    <xs:attribute name="collectedAt"   type="xs:dateTime" use="required" />
+    <xs:attribute name="collectedBy"   type="xs:string"   use="required" />
+    <xs:attribute name="scriptVersion" type="xs:string"   use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="DatabaseInfo">
+    <xs:sequence>
+      <xs:element name="QueryResults"  type="QueryResults" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+
+    <xs:attribute name="name"  type="xs:string"   use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="QueryResults">
+    <xs:sequence>
+      <xs:element name="Row"  minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="name" type="xs:string">
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Message"       type="xs:string"    minOccurs="0"  maxOccurs="unbounded" />
+    </xs:sequence>
+
+    <xs:attribute name="name"   type="xs:string"         use="required" />
+    <xs:attribute name="excecutionTime"   type="xs:int"  use="optional" />
+  </xs:complexType>
+
+</xs:schema>
