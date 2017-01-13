@@ -838,63 +838,340 @@
     </Query>
 
 	<!-- Query  50 -->
-	<Query name="" level="db">
+	<Query name="SP_Logical_Writes" level="db">
 	<![CDATA[
+		SELECT TOP(25) 
+			p.name AS [SP Name], 
+			qs.total_logical_writes AS [TotalLogicalWrites], 
+			qs.total_logical_writes/qs.execution_count AS [AvgLogicalWrites], 
+			qs.execution_count,
+			ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute],
+			qs.total_elapsed_time, 
+			qs.total_elapsed_time/qs.execution_count AS [avg_elapsed_time], 
+			qs.cached_time
+		FROM 
+			sys.procedures AS p WITH (NOLOCK)
+			INNER JOIN sys.dm_exec_procedure_stats AS qs WITH (NOLOCK) ON p.[object_id] = qs.[object_id]
+		WHERE 
+			qs.database_id = DB_ID()
+			AND qs.total_logical_writes > 0
+		ORDER BY 
+			qs.total_logical_writes DESC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query  51 -->
-	<Query name="" level="db">
+	<Query name="Top_IO_Statements" level="db">
 	<![CDATA[
+		SELECT TOP(50) 
+			OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
+			(qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], 
+			qs.execution_count AS [Execution Count],
+			SUBSTRING(qt.[text],qs.statement_start_offset/2, 
+			(CASE 
+				WHEN qs.statement_end_offset = -1 
+			 THEN LEN(CONVERT(nvarchar(max), qt.[text])) * 2 
+				ELSE qs.statement_end_offset 
+			 END - qs.statement_start_offset)/2) AS [Query Text]	
+		FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
+		CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) AS qt
+		WHERE qt.[dbid] = DB_ID()
+		ORDER BY [Avg IO] DESC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query  52 -->
-	<Query name="" level="db">
+	<Query name="Bad_NC_Indexes" level="db">
 	<![CDATA[
+		SELECT 
+			OBJECT_NAME(s.[object_id]) AS [Table Name], 
+			i.name AS [Index Name], 
+			i.index_id, 
+			i.is_disabled, 
+			i.is_hypothetical,
+			i.has_filter, 
+			i.fill_factor,
+			user_updates AS [Total Writes], 
+			user_seeks + user_scans + user_lookups AS [Total Reads],
+			user_updates - (user_seeks + user_scans + user_lookups) AS [Difference]
+		FROM 
+			sys.dm_db_index_usage_stats AS s WITH (NOLOCK)
+			INNER JOIN sys.indexes AS i WITH (NOLOCK) ON s.[object_id] = i.[object_id]
+				AND i.index_id = s.index_id
+		WHERE 
+			OBJECTPROPERTY(s.[object_id],'IsUserTable') = 1
+			AND s.database_id = DB_ID()
+			AND user_updates > (user_seeks + user_scans + user_lookups)
+			AND i.index_id > 1
+		ORDER BY 
+			[Difference] DESC, 
+			[Total Writes] DESC, 
+			[Total Reads] ASC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query 53 -->
-	<Query name="" level="db">
+ 	<Query name="Missing_Indexes" level="db">
 	<![CDATA[
+		SELECT DISTINCT 
+			CONVERT(decimal(18,2), user_seeks * avg_total_user_cost * (avg_user_impact * 0.01)) AS [index_advantage],
+			migs.last_user_seek, 
+			mid.[statement] AS [Database.Schema.Table],
+			mid.equality_columns, 
+			mid.inequality_columns, 
+			mid.included_columns,
+			migs.unique_compiles, 
+			migs.user_seeks, 
+			migs.avg_total_user_cost, 
+			migs.avg_user_impact,
+			OBJECT_NAME(mid.[object_id]) AS [Table Name], 
+			p.rows AS [Table Rows]
+		FROM 
+			sys.dm_db_missing_index_group_stats AS migs WITH (NOLOCK)
+			INNER JOIN sys.dm_db_missing_index_groups AS mig WITH (NOLOCK)
+				ON migs.group_handle = mig.index_group_handle
+			INNER JOIN sys.dm_db_missing_index_details AS mid WITH (NOLOCK)
+			ON mig.index_handle = mid.index_handle
+			INNER JOIN sys.partitions AS p WITH (NOLOCK)
+			ON p.[object_id] = mid.[object_id]
+		WHERE 
+			mid.database_id = DB_ID() 
+		ORDER BY 
+			index_advantage DESC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query 54 -->
-	<Query name="" level="db">
+	<Query name="Missing_Index_Warnings" level="db">
 	<![CDATA[
+		SELECT TOP(25) 
+			OBJECT_NAME(objectid) AS [ObjectName], 
+            query_plan, 
+			cp.objtype, 
+			cp.usecounts, 
+			cp.size_in_bytes
+		FROM 
+			sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
+		CROSS APPLY sys.dm_exec_query_plan(cp.plan_handle) AS qp
+		WHERE CAST(query_plan AS NVARCHAR(MAX)) LIKE N'%MissingIndex%' AND dbid = DB_ID()
+		ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query 55 -->
-	<Query name="" level="db">
+	<Query name="Buffer_Usage" level="db">
 	<![CDATA[
+		SELECT 
+			OBJECT_NAME(p.[object_id]) AS [Object Name], 
+			p.index_id, 
+			CAST(COUNT(*)/128.0 AS DECIMAL(10, 2)) AS [Buffer size(MB)],  
+			COUNT(*) AS [BufferCount], 
+			p.Rows AS [Row Count],
+			p.data_compression_desc AS [Compression Type]
+		FROM 
+			sys.allocation_units AS a WITH (NOLOCK)
+			INNER JOIN sys.dm_os_buffer_descriptors AS b WITH (NOLOCK)
+			ON a.allocation_unit_id = b.allocation_unit_id
+			INNER JOIN sys.partitions AS p WITH (NOLOCK)
+			ON a.container_id = p.hobt_id
+		WHERE 
+			b.database_id = CONVERT(int,DB_ID())
+			AND p.[object_id] > 100
+		GROUP BY 
+			p.[object_id], 
+			p.index_id, 
+			p.data_compression_desc, 
+			p.[Rows]
+		ORDER BY 
+			[BufferCount] DESC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query 56 -->
-	<Query name="" level="db">
+	<Query name="Table_Sizes" level="db">
 	<![CDATA[
+		SELECT 
+			OBJECT_NAME(object_id) AS [ObjectName], 
+			SUM(Rows) AS [RowCount], 
+			data_compression_desc AS [CompressionType]
+		FROM 
+			sys.partitions WITH (NOLOCK)
+		WHERE index_id < 2 --ignore the partitions from the non-clustered index if any
+			AND OBJECT_NAME(object_id) NOT LIKE N'sys%'
+			AND OBJECT_NAME(object_id) NOT LIKE N'queue_%' 
+			AND OBJECT_NAME(object_id) NOT LIKE N'filestream_tombstone%' 
+			AND OBJECT_NAME(object_id) NOT LIKE N'fulltext%'
+			AND OBJECT_NAME(object_id) NOT LIKE N'ifts_comp_fragment%'
+			AND OBJECT_NAME(object_id) NOT LIKE N'filetable_updates%'
+			AND OBJECT_NAME(object_id) NOT LIKE N'xml_index_nodes%'
+		GROUP BY 
+			object_id, 
+			data_compression_desc
+		ORDER BY 
+			SUM(Rows) DESC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
 	<!-- Query 57  -->
-	<Query name="" level="db">
+	<Query name="Table_Properties" level="db">
 	<![CDATA[
+		SELECT 
+			OBJECT_NAME(t.[object_id]) AS [ObjectName], 
+			p.[rows] AS [Table Rows], 
+			p.index_id, 
+			p.data_compression_desc AS [Index Data Compression],
+			t.create_date, 
+			t.lock_on_bulk_load, 
+			t.is_replicated, 
+			t.has_replication_filter, 
+			t.is_tracked_by_cdc, 
+			t.lock_escalation_desc, 
+			t.is_filetable
+		FROM 
+			sys.tables AS t WITH (NOLOCK)
+			INNER JOIN sys.partitions AS p WITH (NOLOCK) ON t.[object_id] = p.[object_id]
+		WHERE 
+			OBJECT_NAME(t.[object_id]) NOT LIKE N'sys%'
+		ORDER BY 
+			OBJECT_NAME(t.[object_id]), 
+			p.index_id 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
-	<!-- Query  -->
-	<Query name="" level="db">
+	<!-- Query 58 -->
+	<Query name="Statistics_Update" level="db">
 	<![CDATA[
+	SELECT SCHEMA_NAME(o.Schema_ID) + N'.' + o.NAME AS [Object Name], o.type_desc AS [Object Type],
+      i.name AS [Index Name], STATS_DATE(i.[object_id], i.index_id) AS [Statistics Date], 
+      s.auto_created, s.no_recompute, s.user_created, s.is_temporary,
+	  st.row_count, st.used_page_count
+FROM sys.objects AS o WITH (NOLOCK)
+INNER JOIN sys.indexes AS i WITH (NOLOCK)
+ON o.[object_id] = i.[object_id]
+INNER JOIN sys.stats AS s WITH (NOLOCK)
+ON i.[object_id] = s.[object_id] 
+AND i.index_id = s.stats_id
+INNER JOIN sys.dm_db_partition_stats AS st WITH (NOLOCK)
+ON o.[object_id] = st.[object_id]
+AND i.[index_id] = st.[index_id]
+WHERE o.[type] IN ('U', 'V')
+AND st.row_count > 0
+ORDER BY STATS_DATE(i.[object_id], i.index_id) DESC OPTION (RECOMPILE);  
 	]]>
     </Query>
 
-	<!-- Query  -->
-	<Query name="" level="db">
+	<!-- Query 59 -->
+	<Query name="Volatile Indexes" level="db">
 	<![CDATA[
+	SELECT o.name AS [Object Name], o.[object_id], o.type_desc, s.name AS [Statistics Name], 
+       s.stats_id, s.no_recompute, s.auto_created, 
+	   sp.modification_counter, sp.rows, sp.rows_sampled, sp.last_updated
+FROM sys.objects AS o WITH (NOLOCK)
+INNER JOIN sys.stats AS s WITH (NOLOCK)
+ON s.object_id = o.object_id
+CROSS APPLY sys.dm_db_stats_properties(s.object_id, s.stats_id) AS sp
+WHERE o.type_desc NOT IN (N'SYSTEM_TABLE', N'INTERNAL_TABLE')
+AND sp.modification_counter > 0
+ORDER BY sp.modification_counter DESC, o.name OPTION (RECOMPILE);
 	]]>
     </Query>
-	
+
+	<!-- Query 60 -->
+	<Query name="Index Fragmentation" level="db">
+	<![CDATA[
+	SELECT DB_NAME(ps.database_id) AS [Database Name], OBJECT_NAME(ps.OBJECT_ID) AS [Object Name], 
+i.name AS [Index Name], ps.index_id, ps.index_type_desc, ps.avg_fragmentation_in_percent, 
+ps.fragment_count, ps.page_count, i.fill_factor, i.has_filter, i.filter_definition
+FROM sys.dm_db_index_physical_stats(DB_ID(),NULL, NULL, NULL , N'LIMITED') AS ps
+INNER JOIN sys.indexes AS i WITH (NOLOCK)
+ON ps.[object_id] = i.[object_id] 
+AND ps.index_id = i.index_id
+WHERE ps.database_id = DB_ID()
+AND ps.page_count > 2500
+ORDER BY ps.avg_fragmentation_in_percent DESC OPTION (RECOMPILE);
+	]]>
+    </Query>
+
+	<!-- Query 61 -->
+	<Query name="Overall Index Usage - Reads" level="db">
+	<![CDATA[
+	SELECT OBJECT_NAME(i.[object_id]) AS [ObjectName], i.name AS [IndexName], i.index_id, 
+       s.user_seeks, s.user_scans, s.user_lookups,
+	   s.user_seeks + s.user_scans + s.user_lookups AS [Total Reads], 
+	   s.user_updates AS [Writes],  
+	   i.type_desc AS [Index Type], i.fill_factor AS [Fill Factor], i.has_filter, i.filter_definition, 
+	   s.last_user_scan, s.last_user_lookup, s.last_user_seek
+FROM sys.indexes AS i WITH (NOLOCK)
+LEFT OUTER JOIN sys.dm_db_index_usage_stats AS s WITH (NOLOCK)
+ON i.[object_id] = s.[object_id]
+AND i.index_id = s.index_id
+AND s.database_id = DB_ID()
+WHERE OBJECTPROPERTY(i.[object_id],'IsUserTable') = 1
+ORDER BY s.user_seeks + s.user_scans + s.user_lookups DESC OPTION (RECOMPILE); -- Order by reads
+	]]>
+    </Query>
+
+	<!-- Query 62 -->
+	<Query name="Overall Index Usage - Writes" level="db">
+	<![CDATA[
+	SELECT OBJECT_NAME(i.[object_id]) AS [ObjectName], i.name AS [IndexName], i.index_id,
+	   s.user_updates AS [Writes], s.user_seeks + s.user_scans + s.user_lookups AS [Total Reads], 
+	   i.type_desc AS [Index Type], i.fill_factor AS [Fill Factor], i.has_filter, i.filter_definition,
+	   s.last_system_update, s.last_user_update
+FROM sys.indexes AS i WITH (NOLOCK)
+LEFT OUTER JOIN sys.dm_db_index_usage_stats AS s WITH (NOLOCK)
+ON i.[object_id] = s.[object_id]
+AND i.index_id = s.index_id
+AND s.database_id = DB_ID()
+WHERE OBJECTPROPERTY(i.[object_id],'IsUserTable') = 1
+ORDER BY s.user_updates DESC OPTION (RECOMPILE);						 -- Order by writes
+	]]>
+    </Query>
+
+	<!-- Query 63 -->
+	<Query name="Lock_Waits" level="db">
+	<![CDATA[
+	SELECT o.name AS [table_name], i.name AS [index_name], ios.index_id, ios.partition_number,
+		SUM(ios.row_lock_wait_count) AS [total_row_lock_waits], 
+		SUM(ios.row_lock_wait_in_ms) AS [total_row_lock_wait_in_ms],
+		SUM(ios.page_lock_wait_count) AS [total_page_lock_waits],
+		SUM(ios.page_lock_wait_in_ms) AS [total_page_lock_wait_in_ms],
+		SUM(ios.page_lock_wait_in_ms)+ SUM(row_lock_wait_in_ms) AS [total_lock_wait_in_ms]
+FROM sys.dm_db_index_operational_stats(DB_ID(), NULL, NULL, NULL) AS ios
+INNER JOIN sys.objects AS o WITH (NOLOCK)
+ON ios.[object_id] = o.[object_id]
+INNER JOIN sys.indexes AS i WITH (NOLOCK)
+ON ios.[object_id] = i.[object_id] 
+AND ios.index_id = i.index_id
+WHERE o.[object_id] > 100
+GROUP BY o.name, i.name, ios.index_id, ios.partition_number
+HAVING SUM(ios.page_lock_wait_in_ms)+ SUM(row_lock_wait_in_ms) > 0
+ORDER BY total_lock_wait_in_ms DESC OPTION (RECOMPILE);
+	]]>
+    </Query>
+
+	<!-- Query 64 -->
+	<Query name="Recent Full Backups" level="db">
+	<![CDATA[
+	SELECT TOP (30) bs.machine_name, bs.server_name, bs.database_name AS [Database Name], bs.recovery_model,
+CONVERT (BIGINT, bs.backup_size / 1048576 ) AS [Uncompressed Backup Size (MB)],
+CONVERT (BIGINT, bs.compressed_backup_size / 1048576 ) AS [Compressed Backup Size (MB)],
+CONVERT (NUMERIC (20,2), (CONVERT (FLOAT, bs.backup_size) /
+CONVERT (FLOAT, bs.compressed_backup_size))) AS [Compression Ratio], bs.has_backup_checksums, bs.is_copy_only,
+DATEDIFF (SECOND, bs.backup_start_date, bs.backup_finish_date) AS [Backup Elapsed Time (sec)],
+bs.backup_finish_date AS [Backup Finish Date]
+FROM msdb.dbo.backupset AS bs WITH (NOLOCK)
+WHERE bs.database_name = DB_NAME(DB_ID())
+AND bs.[type] = 'D' -- Change to L if you want Log backups
+ORDER BY bs.backup_finish_date DESC OPTION (RECOMPILE);
+	]]>
+    </Query>
+
 </Queries>
