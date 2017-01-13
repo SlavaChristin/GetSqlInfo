@@ -1,5 +1,8 @@
 <SqlServerInfo name="xxx" collectedAt="2017-01-01T11:00:00" scriptVersion="1.0" collectedBy="schristin">
   <QueryResults name="xx">
+    <Columns>
+       <Column name="" type="" />  
+    </Columns>
     <Row>
       <Property  name="xxx">value</Property>
       <Property  name="xxx">value</Property>
