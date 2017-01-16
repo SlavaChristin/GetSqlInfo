@@ -33,9 +33,19 @@
 	<!-- Query 4 -->
 	<Query name="ConfigurationValues" level="server">
 	<![CDATA[
-		SELECT name, value, value_in_use, minimum, maximum, [description], is_dynamic, is_advanced
-		FROM sys.configurations WITH (NOLOCK)
-		ORDER BY name OPTION (RECOMPILE);
+		SELECT 
+			name, 
+			value, 
+			value_in_use, 
+			minimum, 
+			maximum, 
+			[description], 
+			is_dynamic, 
+			is_advanced 
+		FROM 
+			sys.configurations WITH (NOLOCK)
+		ORDER BY name 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
@@ -552,7 +562,6 @@
 	<![CDATA[
 		SELECT TOP(100) 
 			DB_NAME(t.[dbid]) AS [Database Name], 
-			LEFT(t.[text], 50) AS [Short Query Text],  
 			qs.total_worker_time AS [Total Worker Time], 
 			qs.min_worker_time AS [Min Worker Time],
 			qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
@@ -580,14 +589,15 @@
 	<Query name="PageLifeExpectancy"  level="server">
 	<![CDATA[
 		SELECT 
-			@@SERVERNAME AS [Server Name], 
+			@@SERVERNAME AS [ServerName], 
 			[object_name], 
 			instance_name, 
-			cntr_value AS [Page Life Expectancy]
+			cntr_value AS [PageLifeExpectancy]
 		FROM 
 			sys.dm_os_performance_counters WITH (NOLOCK)
 		WHERE [object_name] LIKE N'%Buffer Node%' -- Handles named instances
-		AND counter_name = N'Page life expectancy' OPTION (RECOMPILE);
+		AND counter_name = N'Page life expectancy' 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 
@@ -606,7 +616,7 @@
     </Query>
 	
 	<!-- Query 40  -->
-	<Query name="AdHocQueries"  level="server">
+	<Query name="AdHocQueries"  level="server" textColumns="QueryText">
 	<![CDATA[
 		SELECT TOP(50) 
 			[text] AS [QueryText], 
@@ -616,18 +626,19 @@
 		FROM 
 			sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 			CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
-		WHERE cp.cacheobjtype = N'Compiled Plan' AND cp.objtype IN (N'Adhoc', N'Prepared')  AND cp.usecounts = 1
-		ORDER BY cp.size_in_bytes 
-		DESC OPTION (RECOMPILE);
+		WHERE 
+			cp.cacheobjtype = N'Compiled Plan' AND cp.objtype IN (N'Adhoc', N'Prepared')  AND cp.usecounts = 1
+		ORDER BY 
+			cp.size_in_bytes DESC 
+		OPTION (RECOMPILE);
 	]]>
     </Query>
 	
 	<!-- Query 41  -->
-	<Query name="TopLogicalReadsQueries"  level="server">
+	<Query name="TopLogicalReadsQueries"  level="server" textColumns="QueryText,QueryPlan">
 	<![CDATA[
 		SELECT TOP(50) 
 			DB_NAME(t.[dbid]) AS [Database Name], 
-			LEFT(t.[text], 50) AS [Short Query Text],
 			qs.total_logical_reads AS [Total Logical Reads],
 			qs.min_logical_reads AS [Min Logical Reads],
 			qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
@@ -640,8 +651,8 @@
 			qs.max_elapsed_time AS [Max Elapsed Time],
 			qs.execution_count AS [Execution Count], 
 			qs.creation_time AS [Creation Time],
-			t.[text] AS [Complete Query Text], 
-			qp.query_plan AS [Query Plan]
+			t.[text] AS [QueryText], 
+			qp.query_plan AS [QueryPlan]
 		FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 		CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 		CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -703,10 +714,9 @@
     </Query>
 	
 	<!-- Query 44 -->  
-	<Query name="QueryExecutionCounts" level="db">
+	<Query name="QueryExecutionCounts" level="db" textColumns="QueryText,QueryPlan">
 	<![CDATA[
 			SELECT TOP(50) 
-				LEFT(t.[text], 50) AS [Short Query Text], 
 				qs.execution_count AS [Execution Count],
 				qs.total_logical_reads AS [Total Logical Reads],
 				qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
@@ -715,8 +725,8 @@
 				qs.total_elapsed_time AS [Total Elapsed Time],
 				qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 				qs.creation_time AS [Creation Time],
-				t.[text] AS [Complete Query Text], 
-				qp.query_plan AS [Query Plan]
+				t.[text] AS QueryText, 
+				qp.query_plan AS QueryPlan
 		FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 		CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 		CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -994,6 +1004,7 @@
 
 	<!-- Query 56 -->
 	<Query name="Table_Sizes" level="db">
+	<!-- TODO Add actual size of table --> 
 	<![CDATA[
 		SELECT 
 			OBJECT_NAME(object_id) AS [ObjectName], 
