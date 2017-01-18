@@ -1,19 +1,11 @@
-﻿param(
-    [string]$Server               = '.\sql2012',
+param(
+    [string]$Server               = 'OPS80\BID2WIN',
     [string]$Username             = $null,
     [string]$Password             = $null,
     [string]$IgnoreDatabases      = $null,
 
     [switch]$Offline              = $false	
 )
-
-function GetQueryText($QueryName) 
-{
-    $QueryText = $Queries.SelectSingleNode("/Queries/Query[@name='$QueryName']")
-    
-    # TODO Check if query text is empty
-    return $QueryText.InnerText
-}
 
 
 function RunQuery($SqlQuery, $Db) 
@@ -32,15 +24,17 @@ function RunQuery($SqlQuery, $Db)
     }
 }
 
-function SaveQueryResults($QueryName, $DatabaseName, $xmlWriter, $cdataColumns) 
+function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns) 
 {
-    $query = GetQueryText $QueryName
-    
+    $QueryName = $Query.name
+
+    $QueryText = $Query.InnerText
+    # GetQueryText $QueryName
     
     $xmlWriter.WriteStartElement("QueryResults")
     $xmlWriter.WriteAttributeString("name", $QueryName)  
     try  {
-        $result = RunQuery $query $DatabaseName
+        $result = RunQuery $QueryText $DatabaseName
         
         foreach ($row in $result) {
            $xmlWriter.WriteStartElement("Row")
@@ -58,12 +52,51 @@ function SaveQueryResults($QueryName, $DatabaseName, $xmlWriter, $cdataColumns)
            $xmlWriter.WriteEndElement();
         }
     } catch [Exception] {
+        $Message = $_.Exception.Message
+        Write-Host "Cannot process query $QueryName $($Query.minVersion) : $Message"
         #$_.Exception.GetType().FullName + ":" + $_.Exception.Message + $OFS + $OFS | Out-File -append $ResultFile -encoding utf8
         $xmlWriter.WriteStartElement("Message")
-        $xmlWriter.WriteString($_.Exception.Message)
+        $xmlWriter.WriteString($Message)
         $xmlWriter.WriteEndElement();
     }
     $xmlWriter.WriteEndElement();
+}
+
+function compareSqlVersions($versionA, $versionB) {
+    $a1,$a2,$a3,$a4 = $versionA.split('.', 4)
+    $b1,$b2,$b3,$b4 = $versionB.split('.', 4)
+    if (!$b4) {
+       $b4 = "0"
+    }
+    if (!$a4) {
+        $a4 = "0"
+    }
+
+    if ([int]$a1 -gt [int]$b1) {
+        return 1;
+    } elseif ([int]$a1 -lt [int]$b1) {
+        return -1;
+    }
+
+    if ([int]$a2 -gt [int]$b2) {
+        return 2;
+    } elseif ([int]$a2 -lt [int]$b2) {
+        return -2;
+    }
+
+    if ([int]$a3 -gt [int]$b3) {
+        return 3;
+    } elseif ([int]$a3 -lt [int]$b3) {
+        return -3;
+    }
+
+    if ([int]$a4 -gt [int]$b4) {
+        return 4;
+    } elseif ([int]$a4 -lt [int]$b4) {
+        return -4;
+    }
+
+    return 0;
 }
 
 #if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
@@ -78,34 +111,54 @@ $ErrorActionPreference = "Stop"
 Write-Host "     Server: $Server"
 Write-Host "   Username: $Username"
 
-$PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$ResultFile = "$PSScriptRoot\Results2.xml"
+$ScriptLocation = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$ResultFile = "$ScriptLocation\results.xml"
+
+$serverVersion = (RunQuery "select SERVERPROPERTY('ProductVersion') as version" "master").version
+Write-Host "Server version is $serverVersion"
+
+[xml]$Queries = Get-Content $ScriptLocation\Queries\Queries.xml
+
+$queriesToRun = @{}
+
+foreach ($query in $Queries.Queries.Query | where { (compareSqlVersions $serverVersion  $_.minVersion)  -ge 0 })
+{
+    if (!$queriesToRun[$query.name]) {
+        $queriesToRun[$query.name] = $query
+    } elseif ((compareSqlVersions $query.minVersion $queriesToRun[$query.name].minVersion)  -ge 0) {
+        $queriesToRun[$query.name] = $query
+    }
+        
+}
+
+# foreach ($query in $queriesToRun.Values) 
+#{
+#    Write-Host "$($query.name) $($query.minVersion)"
+#}
 
 
-[xml]$Queries = Get-Content $PSScriptRoot\Queries.xml
+$date = Get-Date -Format s
 
-#Get-Date | Out-File $ResultFile -encoding utf8
-
-$date = Get-Date -Format g
-
+Write-Host "Saving results to $ResultFile"
 # Create The Document
-$xmlWriter = New-Object System.XMl.XmlTextWriter($ResultFile,$Null)
+$xmlWriter = New-Object System.XMl.XmlTextWriter($ResultFile, $Null)
 $xmlWriter.Formatting = "Indented"
 $xmlWriter.Indentation = "4"
 $xmlWriter.WriteStartDocument()
 
 $xmlWriter.WriteStartElement("SqlServerInfo")
 $xmlWriter.WriteAttributeString("name", $Server)
-$xmlWriter.WriteAttributeString("collectedAt",$date)
-$xmlWriter.WriteAttributeString("scriptVersion","1.0")
-$xmlWriter.WriteAttributeString("collectedBy",[Environment]::UserName)
+$xmlWriter.WriteAttributeString("collectedAt", $date)
+$xmlWriter.WriteAttributeString("scriptVersion", "1.0")
+$xmlWriter.WriteAttributeString("collectedBy", [Environment]::UserName)
+$xmlWriter.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+$xmlWriter.WriteAttributeString("xsi:noNamespaceSchemaLocation", "SqlServerInfo.xsd")
 
 
-foreach ($query in $Queries.Queries.Query | where { $_.level -eq "server" })
+foreach ($query in $queriesToRun.Values | where { $_.level -eq "server" })
 {      
     $cdataColumns = if ($query.textColumns -eq $null) { @() } else { $query.textColumns.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries) };
-   
-    SaveQueryResults $query.name "master" $xmlWriter $cdataColumns
+    SaveQueryResults $query "master" $xmlWriter $cdataColumns
 }
 
 
@@ -131,15 +184,15 @@ foreach ($db in $dbList) {
     
         $xmlWriter.WriteStartElement("DatabaseInfo")
         $xmlWriter.WriteAttributeString("name", $db.name)
-        $xmlWriter.WriteAttributeString("version",   $appVersion.Version)
-        $xmlWriter.WriteAttributeString("dbVersion", $appVersion.DatabaseVersion)
+        # $xmlWriter.WriteAttributeString("version",   $appVersion.Version)
+        # $xmlWriter.WriteAttributeString("dbVersion", $appVersion.DatabaseVersion)
     
         Write-Host "Handling database $($db.name)"
 
-        foreach ($query in $Queries.Queries.Query | where { $_.level -eq "db" })
+        foreach ($query in $queriesToRun.Values | where { $_.level -eq "db" })
         {       
               $cdataColumns = if ($query.textColumns -eq $null) { @() } else { $query.textColumns.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries) };
-              SaveQueryResults $query.name  $db.name $xmlWriter $cdataColumns
+              SaveQueryResults $query  $db.name $xmlWriter $cdataColumns
         }
         $xmlWriter.WriteEndElement();
     }
