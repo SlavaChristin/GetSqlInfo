@@ -11,28 +11,22 @@ Add-Type -TypeDefinition @"
 
 function ProcessSql($xmlWriter, $comment, $sql, $i, $fileInfo) {
     if ($i -eq 0){
-       $xmlWriter.WriteComment(($comment+"`r`n    "+$sql).Replace("--","//"))
+       # $xmlWriter.WriteComment(($comment+"`r`n    "+$sql).Replace("--","//"))
     } else {
-        $xmlWriter.WriteComment($comment.Replace("--","//"))
+
         $pattern =  "(?m)^--\s*(?<desc>.+?)\s*\(Query (?<id>[\d]+)\)\s*\((?<name>.+?)\)"
         if ($comment -match $pattern){
             $id   = $Matches["id"]
             $desc = $Matches["desc"]
             $name = $Matches["name"]
 
-            $xmlWriter.WriteStartElement("Query")
-            $xmlWriter.WriteAttributeString("id", $id)
-            $xmlWriter.WriteAttributeString("name", $name)
-            $xmlWriter.WriteAttributeString("description", $desc)
-            $xmlWriter.WriteAttributeString("minVersion", $fileInfo.version)
-            $xmlWriter.WriteAttributeString("level", $queryLevel)
-            $xmlWriter.WriteCData("`r`n$sql`r`n")
-            $xmlWriter.WriteEndElement();
+            $query =  @{ id= $id; name=$name; description=$desc; file=$fileInfo; level = $queryLevel; text = $sql; comment=$comment }
+            $global:Queries += $query;
+
         } else {
             Write-Host "WARN: can't parse`r`n$comment"
         }
     }
-    
 }
 
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -44,22 +38,24 @@ $xmlWriter.Indentation = "4"
 $xmlWriter.WriteStartDocument()
 $xmlWriter.WriteStartElement("Queries")
 
-$files = 
-   @{ file = "SQL Server 2005.sql";    version = "9.0.0"   },
-   @{ file = "SQL Server 2008 R2.sql"; version = "10.0.0"  },
-   @{ file = "SQL Server 2008.sql";    version = "10.50.0" },
-   @{ file = "SQL Server 2012.sql";    version = "11.0.0"  },
-   @{ file = "SQL Server 2014.sql";    version = "12.0.0"  },
-   @{ file = "SQL Server 2016.sql";    version = "13.0.0"  },
-   @{ file = "SQL Server vNext.sql";   version = "14.0.0"  }
+$Files = 
+   @{ name = "SQL Server 2005.sql";    version = "9.0.0"   },
+   @{ name = "SQL Server 2008 R2.sql"; version = "10.0.0"  },
+   @{ name = "SQL Server 2008.sql";    version = "10.50.0" },
+   @{ name = "SQL Server 2012.sql";    version = "11.0.0"  },
+   @{ name = "SQL Server 2014.sql";    version = "12.0.0"  },
+   @{ name = "SQL Server 2016.sql";    version = "13.0.0"  },
+   @{ name = "SQL Server vNext.sql";   version = "14.0.0"  }
 
-$files | Foreach-Object {
+$Queries = @()
+
+$Files | Foreach-Object {
     $queryLevel = "server"
-    $fileName = "$PSScriptRoot\$($_.file)"
+    $fileName = "$PSScriptRoot\$($_.name)"
 
     Write-Host "Parsing file $fileName"
 
-    $xmlWriter.WriteComment($fileName)
+    # $xmlWriter.WriteComment($fileName)
 
     $reader = [System.IO.File]::OpenText($fileName)
 
@@ -129,13 +125,32 @@ $files | Foreach-Object {
             }
         }
         if (($state -eq [State]::SQL_FIRST) -or ($state -eq [State]::SQL)){
-            ProcessSql $xmlWriter $comment $text $i
+            ProcessSql $xmlWriter $comment $text $i $fileInfo
         }    
     } 
     finally {
         $reader.Close()
     }
 
+}
+
+$QueriesSorted = $Queries | Sort-Object -property @{Expression = {$_.name}; Ascending = $true}, @{Expression = {$_.file.name}; Ascending = $true} 
+
+foreach ($query in $QueriesSorted) 
+{
+    $xmlWriter.WriteComment($query.comment.Replace("--","//"))
+                                   
+    $xmlWriter.WriteStartElement("Query")
+      
+    $xmlWriter.WriteAttributeString("id",          $query.id)
+    $xmlWriter.WriteAttributeString("name",        $query.name)
+    $xmlWriter.WriteAttributeString("description", $query.description)
+    $xmlWriter.WriteAttributeString("file",        $query.file.name)
+    $xmlWriter.WriteAttributeString("fileVersion", $query.file.version)
+    $xmlWriter.WriteAttributeString("level",       $query.level)
+    $xmlWriter.WriteCData("`r`n$($query.text)`r`n")
+
+    $xmlWriter.WriteEndElement();
 }
 
 $xmlWriter.WriteEndElement();
