@@ -32,7 +32,7 @@ function ProcessSql($xmlWriter, $comment, $sql, $i, $fileInfo) {
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $ResultFile = "$PSScriptRoot\Queries.xml"
 
-$xmlWriter = New-Object System.XMl.XmlTextWriter($ResultFile,$Null)
+$xmlWriter = New-Object System.XMl.XmlTextWriter($ResultFile, $Null)
 $xmlWriter.Formatting = "Indented"
 $xmlWriter.Indentation = "4"
 $xmlWriter.WriteStartDocument()
@@ -40,8 +40,8 @@ $xmlWriter.WriteStartElement("Queries")
 
 $Files = 
    @{ name = "SQL Server 2005.sql";    version = "9.0.0"   },
-   @{ name = "SQL Server 2008 R2.sql"; version = "10.0.0"  },
-   @{ name = "SQL Server 2008.sql";    version = "10.50.0" },
+   @{ name = "SQL Server 2008.sql";    version = "10.0.0"  },
+   @{ name = "SQL Server 2008 R2.sql"; version = "10.50.0" },
    @{ name = "SQL Server 2012.sql";    version = "11.0.0"  },
    @{ name = "SQL Server 2014.sql";    version = "12.0.0"  },
    @{ name = "SQL Server 2016.sql";    version = "13.0.0"  },
@@ -54,8 +54,6 @@ $Files | Foreach-Object {
     $fileName = "$PSScriptRoot\$($_.name)"
 
     Write-Host "Parsing file $fileName"
-
-    # $xmlWriter.WriteComment($fileName)
 
     $reader = [System.IO.File]::OpenText($fileName)
 

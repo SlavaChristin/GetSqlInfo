@@ -33,7 +33,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 39) (Ad hoc Queries)-->
-    <Query id="39" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="39" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -54,7 +54,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 35) (Ad hoc Queries)-->
-    <Query id="35" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="35" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -315,7 +315,7 @@ WHERE scheduler_id < 255 OPTION (RECOMPILE);
 
 
 // Get Average Task Counts (run multiple times) (Query 31) (Avg Task Counts)-->
-    <Query id="31" name="Avg Task Counts" description="Get Average Task Counts (run multiple times)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="31" name="Avg Task Counts" description="Get Average Task Counts (run multiple times)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT AVG(current_tasks_count) AS [Avg Task Count], 
 AVG(runnable_tasks_count) AS [Avg Runnable Task Count],
 AVG(pending_disk_io_count) AS [Avg Pending DiskIO Count]
@@ -329,7 +329,7 @@ WHERE scheduler_id < 255 OPTION (RECOMPILE);
 
 
 // Get Average Task Counts (run multiple times) (Query 27) (Avg Task Counts)-->
-    <Query id="27" name="Avg Task Counts" description="Get Average Task Counts (run multiple times)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="27" name="Avg Task Counts" description="Get Average Task Counts (run multiple times)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT AVG(current_tasks_count) AS [Avg Task Count], 
 AVG(runnable_tasks_count) AS [Avg Runnable Task Count],
 AVG(pending_disk_io_count) AS [Avg Pending DiskIO Count]
@@ -427,7 +427,7 @@ ORDER BY [Difference] DESC, [Total Writes] DESC, [Total Reads] ASC OPTION (RECOM
 
 
 // Possible Bad NC Indexes (writes > reads)  (Query 51) (Bad NC Indexes)-->
-    <Query id="51" name="Bad NC Indexes" description="Possible Bad NC Indexes (writes &gt; reads)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="51" name="Bad NC Indexes" description="Possible Bad NC Indexes (writes &gt; reads)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(s.[object_id]) AS [Table Name], i.name AS [Index Name], i.index_id, 
 i.is_disabled, i.is_hypothetical, i.has_filter, i.fill_factor,
 user_updates AS [Total Writes], user_seeks + user_scans + user_lookups AS [Total Reads],
@@ -449,7 +449,7 @@ ORDER BY [Difference] DESC, [Total Writes] DESC, [Total Reads] ASC OPTION (RECOM
 
 
 // Possible Bad NC Indexes (writes > reads)  (Query 47) (Bad NC Indexes)-->
-    <Query id="47" name="Bad NC Indexes" description="Possible Bad NC Indexes (writes &gt; reads)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="47" name="Bad NC Indexes" description="Possible Bad NC Indexes (writes &gt; reads)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(s.[object_id]) AS [Table Name], i.name AS [Index Name], i.index_id, 
 i.is_disabled, i.is_hypothetical, i.has_filter, i.fill_factor,
 user_updates AS [Total Writes], user_seeks + user_scans + user_lookups AS [Total Reads],
@@ -704,7 +704,7 @@ ORDER BY buffer_count DESC OPTION (RECOMPILE);
 
 // Breaks down buffers used by current database by object (table, index) in the buffer cache  (Query 54) (Buffer Usage)
 // Note: This query could take some time on a busy instance-->
-    <Query id="54" name="Buffer Usage" description="Breaks down buffers used by current database by object (table, index) in the buffer cache" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="54" name="Buffer Usage" description="Breaks down buffers used by current database by object (table, index) in the buffer cache" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(p.[object_id]) AS [Object Name], p.index_id, 
 CAST(COUNT(*)/128.0 AS DECIMAL(10, 2)) AS [Buffer size(MB)],  
 COUNT(*) AS [BufferCount], p.Rows AS [Row Count],
@@ -730,7 +730,7 @@ ORDER BY [BufferCount] DESC OPTION (RECOMPILE);
 
 // Breaks down buffers used by current database by object (table, index) in the buffer cache  (Query 50) (Buffer Usage)
 // Note: This query could take some time on a busy instance-->
-    <Query id="50" name="Buffer Usage" description="Breaks down buffers used by current database by object (table, index) in the buffer cache" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="50" name="Buffer Usage" description="Breaks down buffers used by current database by object (table, index) in the buffer cache" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(p.[object_id]) AS [Object Name], p.index_id, 
 CAST(COUNT(*)/128.0 AS DECIMAL(10, 2)) AS [Buffer size(MB)],  
 COUNT(*) AS [BufferCount], p.Rows AS [Row Count],
@@ -865,7 +865,7 @@ ORDER BY [BufferCount] DESC OPTION (RECOMPILE);
 
 // Get the current node name from your cluster nodes  (Query 13) (Cluster Node Properties)
 // (if your database server is in a failover cluster)-->
-    <Query id="13" name="Cluster Node Properties" description="Get the current node name from your cluster nodes" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="13" name="Cluster Node Properties" description="Get the current node name from your cluster nodes" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT NodeName
 FROM sys.dm_os_cluster_nodes WITH (NOLOCK) OPTION (RECOMPILE);
 ]]></Query>
@@ -885,7 +885,7 @@ FROM sys.dm_os_cluster_nodes WITH (NOLOCK) OPTION (RECOMPILE);
 
 // Get the current node name from your cluster nodes  (Query 11) (Cluster Node Properties)
 // (if your database server is in a failover cluster)-->
-    <Query id="11" name="Cluster Node Properties" description="Get the current node name from your cluster nodes" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="11" name="Cluster Node Properties" description="Get the current node name from your cluster nodes" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT NodeName
 FROM sys.dm_os_cluster_nodes WITH (NOLOCK) OPTION (RECOMPILE);
 ]]></Query>
@@ -1019,7 +1019,7 @@ ORDER BY name OPTION (RECOMPILE);
 
 
 // Get configuration values for instance  (Query 14) (Configuration Values)-->
-    <Query id="14" name="Configuration Values" description="Get configuration values for instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="14" name="Configuration Values" description="Get configuration values for instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT name, value, value_in_use, minimum, maximum, [description], is_dynamic, is_advanced
 FROM sys.configurations WITH (NOLOCK)
 ORDER BY name OPTION (RECOMPILE);
@@ -1032,7 +1032,7 @@ ORDER BY name OPTION (RECOMPILE);
 
 
 // Get configuration values for instance  (Query 12) (Configuration Values)-->
-    <Query id="12" name="Configuration Values" description="Get configuration values for instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="12" name="Configuration Values" description="Get configuration values for instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT name, value, value_in_use, minimum, maximum, [description], is_dynamic, is_advanced
 FROM sys.configurations WITH (NOLOCK)
 ORDER BY name OPTION (RECOMPILE);
@@ -1125,7 +1125,7 @@ ORDER BY COUNT(session_id) DESC OPTION (RECOMPILE);
 
 
 //  Get logins that are connected and how many sessions they have (Query 29) (Connection Counts)-->
-    <Query id="29" name="Connection Counts" description="Get logins that are connected and how many sessions they have" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="29" name="Connection Counts" description="Get logins that are connected and how many sessions they have" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT login_name, [program_name], COUNT(session_id) AS [session_count] 
 FROM sys.dm_exec_sessions WITH (NOLOCK)
 GROUP BY login_name, [program_name]
@@ -1139,7 +1139,7 @@ ORDER BY COUNT(session_id) DESC OPTION (RECOMPILE);
 
 
 //  Get logins that are connected and how many sessions they have (Query 25) (Connection Counts)-->
-    <Query id="25" name="Connection Counts" description="Get logins that are connected and how many sessions they have" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="25" name="Connection Counts" description="Get logins that are connected and how many sessions they have" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT login_name, [program_name], COUNT(session_id) AS [session_count] 
 FROM sys.dm_exec_sessions WITH (NOLOCK)
 GROUP BY login_name, [program_name]
@@ -1168,7 +1168,7 @@ ORDER BY ec.client_net_address, es.[program_name] OPTION (RECOMPILE);
 
 
 // Get a count of SQL connections by IP address (Query 30) (Connection Counts by IP Address)-->
-    <Query id="30" name="Connection Counts by IP Address" description="Get a count of SQL connections by IP address" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="30" name="Connection Counts by IP Address" description="Get a count of SQL connections by IP address" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT ec.client_net_address, es.[program_name], es.[host_name], es.login_name, 
 COUNT(ec.session_id) AS [connection count] 
 FROM sys.dm_exec_sessions AS es WITH (NOLOCK) 
@@ -1184,7 +1184,7 @@ ORDER BY ec.client_net_address, es.[program_name] OPTION (RECOMPILE);
 
 
 // Get a count of SQL connections by IP address (Query 26) (Connection Counts by IP Address)-->
-    <Query id="26" name="Connection Counts by IP Address" description="Get a count of SQL connections by IP address" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="26" name="Connection Counts by IP Address" description="Get a count of SQL connections by IP address" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT ec.client_net_address, es.[program_name], es.[host_name], es.login_name, 
 COUNT(ec.session_id) AS [connection count] 
 FROM sys.dm_exec_sessions AS es WITH (NOLOCK) 
@@ -1485,7 +1485,7 @@ ORDER BY [CPU Rank] OPTION (RECOMPILE);
 
 
 // Get CPU utilization by database (Query 24) (CPU Usage by Database)-->
-    <Query id="24" name="CPU Usage by Database" description="Get CPU utilization by database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="24" name="CPU Usage by Database" description="Get CPU utilization by database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 WITH DB_CPU_Stats
 AS
 (SELECT pa.DatabaseID, DB_Name(pa.DatabaseID) AS [Database Name], SUM(qs.total_worker_time/1000) AS [CPU_Time_Ms]
@@ -1510,7 +1510,7 @@ ORDER BY [CPU Rank] OPTION (RECOMPILE);
 
 
 // Get CPU utilization by database (Query 20) (CPU Usage by Database)-->
-    <Query id="20" name="CPU Usage by Database" description="Get CPU utilization by database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="20" name="CPU Usage by Database" description="Get CPU utilization by database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 WITH DB_CPU_Stats
 AS
 (SELECT pa.DatabaseID, DB_Name(pa.DatabaseID) AS [Database Name], SUM(qs.total_worker_time/1000) AS [CPU_Time_Ms]
@@ -1690,7 +1690,7 @@ ORDER BY record_id DESC OPTION (RECOMPILE);
 
 // Get CPU Utilization History for last 256 minutes (in one minute intervals)  (Query 32) (CPU Utilization History)
 // This version works with SQL Server 2008 R2-->
-    <Query id="32" name="CPU Utilization History" description="Get CPU Utilization History for last 256 minutes (in one minute intervals)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="32" name="CPU Utilization History" description="Get CPU Utilization History for last 256 minutes (in one minute intervals)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 DECLARE @ts_now bigint = (SELECT cpu_ticks/(cpu_ticks/ms_ticks) FROM sys.dm_os_sys_info WITH (NOLOCK)); 
 
 SELECT TOP(256) SQLProcessUtilization AS [SQL Server Process CPU Utilization], 
@@ -1728,7 +1728,7 @@ ORDER BY record_id DESC OPTION (RECOMPILE);
 
 // Get CPU Utilization History for last 256 minutes (in one minute intervals)  (Query 28) (CPU Utilization History)
 // This version works with SQL Server 2008-->
-    <Query id="28" name="CPU Utilization History" description="Get CPU Utilization History for last 256 minutes (in one minute intervals)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="28" name="CPU Utilization History" description="Get CPU Utilization History for last 256 minutes (in one minute intervals)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 DECLARE @ts_now bigint = (SELECT cpu_ticks/(cpu_ticks/ms_ticks) FROM sys.dm_os_sys_info WITH (NOLOCK)); 
 
 SELECT TOP(256) SQLProcessUtilization AS [SQL Server Process CPU Utilization], 
@@ -1895,7 +1895,7 @@ ORDER BY DB_NAME([database_id]) OPTION (RECOMPILE);
 
 
 // File Names and Paths for TempDB and all user databases in instance  (Query 16) (Database Filenames and Paths)-->
-    <Query id="16" name="Database Filenames and Paths" description="File Names and Paths for TempDB and all user databases in instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="16" name="Database Filenames and Paths" description="File Names and Paths for TempDB and all user databases in instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT DB_NAME([database_id]) AS [Database Name], 
        [file_id], name, physical_name, type_desc, state_desc,
 	   is_percent_growth, growth,
@@ -1925,7 +1925,7 @@ ORDER BY DB_NAME([database_id]) OPTION (RECOMPILE);
 
 
 // File Names and Paths for TempDB and all user databases in instance  (Query 13) (Database Filenames and Paths)-->
-    <Query id="13" name="Database Filenames and Paths" description="File Names and Paths for TempDB and all user databases in instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="13" name="Database Filenames and Paths" description="File Names and Paths for TempDB and all user databases in instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT DB_NAME([database_id]) AS [Database Name], 
        [file_id], name, physical_name, type_desc, state_desc,
 	   is_percent_growth, growth,
@@ -2042,7 +2042,7 @@ AND ls.cntr_value > 0 OPTION (RECOMPILE);
 
 // Recovery model, log reuse wait description, log file size, log usage size  (Query 21) (Database Properties)
 // and compatibility level for all databases on instance-->
-    <Query id="21" name="Database Properties" description="Recovery model, log reuse wait description, log file size, log usage size" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="21" name="Database Properties" description="Recovery model, log reuse wait description, log file size, log usage size" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT db.[name] AS [Database Name], db.recovery_model_desc AS [Recovery Model], 
 db.log_reuse_wait_desc AS [Log Reuse Wait Description], 
 ls.cntr_value AS [Log Size (KB)], lu.cntr_value AS [Log Used (KB)],
@@ -2071,7 +2071,7 @@ ORDER BY db.[name] OPTION (RECOMPILE);
 
 // Recovery model, log reuse wait description, log file size, log usage size  (Query 17) (Database Properties)
 // and compatibility level for all databases on instance-->
-    <Query id="17" name="Database Properties" description="Recovery model, log reuse wait description, log file size, log usage size" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="17" name="Database Properties" description="Recovery model, log reuse wait description, log file size, log usage size" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT db.[name] AS [Database Name], db.recovery_model_desc AS [Recovery Model], 
 db.log_reuse_wait_desc AS [Log Reuse Wait Description], 
 ls.cntr_value AS [Log Size (KB)], lu.cntr_value AS [Log Used (KB)],
@@ -2300,7 +2300,7 @@ ON t1.lock_owner_address = t2.resource_address OPTION (RECOMPILE);
 
 
 // Detect blocking (run multiple times)  (Query 57) (Detect Blocking)-->
-    <Query id="57" name="Detect Blocking" description="Detect blocking (run multiple times)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="57" name="Detect Blocking" description="Detect blocking (run multiple times)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT t1.resource_type AS [lock type], DB_NAME(resource_database_id) AS [database],
 t1.resource_associated_entity_id AS [blk object],t1.request_mode AS [lock req],  --- lock requested
 t1.request_session_id AS [waiter sid], t2.wait_duration_ms AS [wait time],       -- spid of waiter  
@@ -2328,7 +2328,7 @@ ON t1.lock_owner_address = t2.resource_address OPTION (RECOMPILE);
 
 
 // Detect blocking (run multiple times)  (Query 53) (Detect Blocking)-->
-    <Query id="53" name="Detect Blocking" description="Detect blocking (run multiple times)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="53" name="Detect Blocking" description="Detect blocking (run multiple times)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT t1.resource_type AS [lock type], DB_NAME(resource_database_id) AS [database],
 t1.resource_associated_entity_id AS [blk object],t1.request_mode AS [lock req],  --- lock requested
 t1.request_session_id AS [waiter sid], t2.wait_duration_ms AS [wait time],       -- spid of waiter  
@@ -2560,7 +2560,7 @@ ORDER BY [Overall Latency] OPTION (RECOMPILE);
 
 // Drive level latency information (Query 19) (Drive Level Latency)
 // Based on code from Jimmy May-->
-    <Query id="19" name="Drive Level Latency" description="Drive level latency information" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="19" name="Drive Level Latency" description="Drive level latency information" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT tab.[Drive], tab.volume_mount_point AS [Volume Mount Point], 
 	CASE 
 		WHEN num_of_reads = 0 THEN 0 
@@ -2609,7 +2609,7 @@ ORDER BY [Overall Latency] OPTION (RECOMPILE);
 
 // Drive level latency information (Query 15) (Drive Level Latency)
 // Based on code from Jimmy May-->
-    <Query id="15" name="Drive Level Latency" description="Drive level latency information" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="15" name="Drive Level Latency" description="Drive level latency information" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT tab.[Drive], tab.volume_mount_point AS [Volume Mount Point], 
 	CASE 
 		WHEN num_of_reads = 0 THEN 0 
@@ -3017,7 +3017,7 @@ DBCC TRACESTATUS (-1);
 
 
 // Returns a list of all global trace flags that are enabled (Query 6) (Global Trace Flags)-->
-    <Query id="6" name="Global Trace Flags" description="Returns a list of all global trace flags that are enabled" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="6" name="Global Trace Flags" description="Returns a list of all global trace flags that are enabled" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 DBCC TRACESTATUS (-1);
 ]]></Query>
     <!--//////
@@ -3027,7 +3027,7 @@ DBCC TRACESTATUS (-1);
 
 
 // Returns a list of all global trace flags that are enabled (Query 6) (Global Trace Flags)-->
-    <Query id="6" name="Global Trace Flags" description="Returns a list of all global trace flags that are enabled" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="6" name="Global Trace Flags" description="Returns a list of all global trace flags that are enabled" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 DBCC TRACESTATUS (-1);
 ]]></Query>
     <!--//////
@@ -3163,7 +3163,7 @@ FROM sys.dm_os_sys_info WITH (NOLOCK) OPTION (RECOMPILE);
 
 // Hardware information from SQL Server 2008 R2  (Query 10) (Hardware Info)
 // (Cannot distinguish between HT and multi-core)-->
-    <Query id="10" name="Hardware Info" description="Hardware information from SQL Server 2008 R2" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="10" name="Hardware Info" description="Hardware information from SQL Server 2008 R2" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT cpu_count AS [Logical CPU Count], hyperthread_ratio AS [Hyperthread Ratio],
 cpu_count/hyperthread_ratio AS [Physical CPU Count], 
 physical_memory_in_bytes/1048576 AS [Physical Memory (MB)], 
@@ -3178,7 +3178,7 @@ FROM sys.dm_os_sys_info WITH (NOLOCK) OPTION (RECOMPILE);
 
 // Hardware information from SQL Server 2008  (Query 8) (Hardware Info)
 // (Cannot distinguish between HT and multi-core)-->
-    <Query id="8" name="Hardware Info" description="Hardware information from SQL Server 2008" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="8" name="Hardware Info" description="Hardware information from SQL Server 2008" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT cpu_count AS [Logical CPU Count], hyperthread_ratio AS [Hyperthread Ratio],
 cpu_count/hyperthread_ratio AS [Physical CPU Count], 
 physical_memory_in_bytes/1048576 AS [Physical Memory (MB)], sqlserver_start_time 
@@ -3482,7 +3482,7 @@ ORDER BY ps.avg_fragmentation_in_percent DESC OPTION (RECOMPILE);
 
 // Get fragmentation info for all indexes above a certain size in the current database  (Query 60) (Index Fragmentation)
 // Note: This query could take some time on a very large database-->
-    <Query id="60" name="Index Fragmentation" description="Get fragmentation info for all indexes above a certain size in the current database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="60" name="Index Fragmentation" description="Get fragmentation info for all indexes above a certain size in the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT DB_NAME(ps.database_id) AS [Database Name], SCHEMA_NAME(o.[schema_id]) AS [Schema Name],
 OBJECT_NAME(ps.OBJECT_ID) AS [Object Name], 
 i.name AS [Index Name], ps.index_id, ps.index_type_desc, ps.avg_fragmentation_in_percent, 
@@ -3505,7 +3505,7 @@ ORDER BY ps.avg_fragmentation_in_percent DESC OPTION (RECOMPILE);
 
 // Get fragmentation info for all indexes above a certain size in the current database  (Query 55) (Index Fragmentation)
 // Note: This query could take some time on a very large database-->
-    <Query id="55" name="Index Fragmentation" description="Get fragmentation info for all indexes above a certain size in the current database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="55" name="Index Fragmentation" description="Get fragmentation info for all indexes above a certain size in the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT DB_NAME(ps.database_id) AS [Database Name], OBJECT_NAME(ps.OBJECT_ID) AS [Object Name], 
 i.name AS [Index Name], ps.index_id, ps.index_type_desc, ps.avg_fragmentation_in_percent, 
 ps.fragment_count, ps.page_count, i.fill_factor, i.has_filter, i.filter_definition
@@ -3693,7 +3693,7 @@ ORDER BY avg_io_stall_ms DESC OPTION (RECOMPILE);
 
 
 // Calculates average stalls per read, per write, and per total input/output for each database file  (Query 20) (IO Stalls by File)-->
-    <Query id="20" name="IO Stalls by File" description="Calculates average stalls per read, per write, and per total input/output for each database file" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="20" name="IO Stalls by File" description="Calculates average stalls per read, per write, and per total input/output for each database file" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT DB_NAME(fs.database_id) AS [Database Name], CAST(fs.io_stall_read_ms/(1.0 + fs.num_of_reads) AS NUMERIC(10,1)) AS [avg_read_stall_ms],
 CAST(fs.io_stall_write_ms/(1.0 + fs.num_of_writes) AS NUMERIC(10,1)) AS [avg_write_stall_ms],
 CAST((fs.io_stall_read_ms + fs.io_stall_write_ms)/(1.0 + fs.num_of_reads + fs.num_of_writes) AS NUMERIC(10,1)) AS [avg_io_stall_ms],
@@ -3712,7 +3712,7 @@ ORDER BY avg_io_stall_ms DESC OPTION (RECOMPILE);
 
 
 // Calculates average stalls per read, per write, and per total input/output for each database file  (Query 16) (IO Stalls by File)-->
-    <Query id="16" name="IO Stalls by File" description="Calculates average stalls per read, per write, and per total input/output for each database file" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="16" name="IO Stalls by File" description="Calculates average stalls per read, per write, and per total input/output for each database file" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT DB_NAME(fs.database_id) AS [Database Name], CAST(fs.io_stall_read_ms/(1.0 + fs.num_of_reads) AS NUMERIC(10,1)) AS [avg_read_stall_ms],
 CAST(fs.io_stall_write_ms/(1.0 + fs.num_of_writes) AS NUMERIC(10,1)) AS [avg_write_stall_ms],
 CAST((fs.io_stall_read_ms + fs.io_stall_write_ms)/(1.0 + fs.num_of_reads + fs.num_of_writes) AS NUMERIC(10,1)) AS [avg_io_stall_ms],
@@ -3839,7 +3839,7 @@ ON vfs.[file_id]= df.[file_id] OPTION (RECOMPILE);
 
 
 // I/O Statistics by file for the current database  (Query 41) (IO Stats By File)-->
-    <Query id="41" name="IO Stats By File" description="I/O Statistics by file for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="41" name="IO Stats By File" description="I/O Statistics by file for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT DB_NAME(DB_ID()) AS [Database Name], df.name AS [Logical Name], vfs.[file_id], 
 df.physical_name AS [Physical Name], vfs.num_of_reads, vfs.num_of_writes, vfs.io_stall_read_ms, vfs.io_stall_write_ms,
 CAST(100. * vfs.io_stall_read_ms/(vfs.io_stall_read_ms + vfs.io_stall_write_ms) AS DECIMAL(10,1)) AS [IO Stall Reads Pct],
@@ -3863,7 +3863,7 @@ ON vfs.[file_id]= df.[file_id] OPTION (RECOMPILE);
 
 
 // I/O Statistics by file for the current database  (Query 37) (IO Stats By File)-->
-    <Query id="37" name="IO Stats By File" description="I/O Statistics by file for the current database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="37" name="IO Stats By File" description="I/O Statistics by file for the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT DB_NAME(DB_ID()) AS [Database Name], df.name AS [Logical Name], vfs.[file_id], 
 df.physical_name AS [Physical Name], vfs.num_of_reads, vfs.num_of_writes, vfs.io_stall_read_ms, vfs.io_stall_write_ms,
 CAST(100. * vfs.io_stall_read_ms/(vfs.io_stall_read_ms + vfs.io_stall_write_ms) AS DECIMAL(10,1)) AS [IO Stall Reads Pct],
@@ -4008,7 +4008,7 @@ ORDER BY [I/O Rank] OPTION (RECOMPILE);
 
 
 // Get I/O utilization by database (Query 25) (IO Usage By Database)-->
-    <Query id="25" name="IO Usage By Database" description="Get I/O utilization by database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="25" name="IO Usage By Database" description="Get I/O utilization by database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 WITH Aggregate_IO_Statistics
 AS
 (SELECT DB_NAME(database_id) AS [Database Name],
@@ -4026,7 +4026,7 @@ ORDER BY [I/O Rank] OPTION (RECOMPILE);
 
 
 // Get I/O utilization by database (Query 21) (IO Usage By Database)-->
-    <Query id="21" name="IO Usage By Database" description="Get I/O utilization by database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="21" name="IO Usage By Database" description="Get I/O utilization by database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 WITH Aggregate_IO_Statistics
 AS
 (SELECT DB_NAME(database_id) AS [Database Name],
@@ -4153,7 +4153,7 @@ DROP TABLE #IOWarningResults;
 
 
 // Look for I/O requests taking longer than 15 seconds in the five most recent SQL Server Error Logs (Query 18) (IO Warnings)-->
-    <Query id="18" name="IO Warnings" description="Look for I/O requests taking longer than 15 seconds in the five most recent SQL Server Error Logs" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="18" name="IO Warnings" description="Look for I/O requests taking longer than 15 seconds in the five most recent SQL Server Error Logs" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 CREATE TABLE #IOWarningResults(LogDate datetime, ProcessInfo sysname, LogText nvarchar(1000));
 
 	INSERT INTO #IOWarningResults 
@@ -4190,7 +4190,7 @@ DROP TABLE #IOWarningResults;
 
 
 // Look for I/O requests taking longer than 15 seconds in the five most recent SQL Server Error Logs (Query 14) (IO Warnings)-->
-    <Query id="14" name="IO Warnings" description="Look for I/O requests taking longer than 15 seconds in the five most recent SQL Server Error Logs" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="14" name="IO Warnings" description="Look for I/O requests taking longer than 15 seconds in the five most recent SQL Server Error Logs" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 CREATE TABLE #IOWarningResults(LogDate datetime, ProcessInfo sysname, LogText nvarchar(1000));
 
 	INSERT INTO #IOWarningResults 
@@ -4380,7 +4380,7 @@ ORDER BY total_lock_wait_in_ms DESC OPTION (RECOMPILE);
 
 
 // Get lock waits for current database (Query 63) (Lock Waits)-->
-    <Query id="63" name="Lock Waits" description="Get lock waits for current database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="63" name="Lock Waits" description="Get lock waits for current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT o.name AS [table_name], i.name AS [index_name], ios.index_id, ios.partition_number,
 		SUM(ios.row_lock_wait_count) AS [total_row_lock_waits], 
 		SUM(ios.row_lock_wait_in_ms) AS [total_row_lock_wait_in_ms],
@@ -4404,7 +4404,7 @@ ORDER BY total_lock_wait_in_ms DESC OPTION (RECOMPILE);
 
 
 // Get lock waits for current database (Query 58) (Lock Waits)-->
-    <Query id="58" name="Lock Waits" description="Get lock waits for current database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="58" name="Lock Waits" description="Get lock waits for current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT o.name AS [table_name], i.name AS [index_name], ios.index_id, ios.partition_number,
 		SUM(ios.row_lock_wait_count) AS [total_row_lock_waits], 
 		SUM(ios.row_lock_wait_in_ms) AS [total_row_lock_wait_in_ms],
@@ -4611,7 +4611,7 @@ ORDER BY SUM(single_pages_kb) DESC OPTION (RECOMPILE);
 
 // Memory Clerk Usage for instance  (Query 38) (Memory Clerk Usage)
 // Look for high value for CACHESTORE_SQLCP (Ad-hoc query plans)-->
-    <Query id="38" name="Memory Clerk Usage" description="Memory Clerk Usage for instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="38" name="Memory Clerk Usage" description="Memory Clerk Usage for instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT TOP(10) [type] AS [Memory Clerk Type], SUM(single_pages_kb)/1024 AS [SPA Memory Usage (MB)] 
 FROM sys.dm_os_memory_clerks WITH (NOLOCK)
 GROUP BY [type]  
@@ -4624,7 +4624,7 @@ ORDER BY SUM(single_pages_kb) DESC OPTION (RECOMPILE);
 
 // Memory Clerk Usage for instance  (Query 34) (Memory Clerk Usage)
 // Look for high value for CACHESTORE_SQLCP (Ad-hoc query plans)-->
-    <Query id="34" name="Memory Clerk Usage" description="Memory Clerk Usage for instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="34" name="Memory Clerk Usage" description="Memory Clerk Usage for instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT TOP(10) [type] AS [Memory Clerk Type], SUM(single_pages_kb)/1024 AS [SPA Memory Usage (MB)] 
 FROM sys.dm_os_memory_clerks WITH (NOLOCK)
 GROUP BY [type]  
@@ -4707,7 +4707,7 @@ ORDER BY SUM(mc.pages_kb) DESC OPTION (RECOMPILE);
 
 
 // Get information on location, time and size of any memory dumps from SQL Server (SQL Server 2008 R2 SP1 or greater)  (Query 15) (Memory Dump Info)-->
-    <Query id="15" name="Memory Dump Info" description="Get information on location, time and size of any memory dumps from SQL Server (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="15" name="Memory Dump Info" description="Get information on location, time and size of any memory dumps from SQL Server (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT [filename], creation_time, size_in_bytes/1048576.0 AS [Size (MB)]
 FROM sys.dm_server_memory_dumps WITH (NOLOCK) 
 ORDER BY creation_time DESC OPTION (RECOMPILE);
@@ -4795,7 +4795,7 @@ AND counter_name = N'Memory Grants Pending' OPTION (RECOMPILE);
 
 
 // Memory Grants Pending value for current instance  (Query 37) (Memory Grants Pending)-->
-    <Query id="37" name="Memory Grants Pending" description="Memory Grants Pending value for current instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="37" name="Memory Grants Pending" description="Memory Grants Pending value for current instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT @@SERVERNAME AS [Server Name], [object_name], cntr_value AS [Memory Grants Pending]                                                                                                       
 FROM sys.dm_os_performance_counters WITH (NOLOCK)
 WHERE [object_name] LIKE N'%Memory Manager%' -- Handles named instances
@@ -4813,7 +4813,7 @@ AND counter_name = N'Memory Grants Pending' OPTION (RECOMPILE);
 
 
 // Memory Grants Pending value for current instance  (Query 33) (Memory Grants Pending)-->
-    <Query id="33" name="Memory Grants Pending" description="Memory Grants Pending value for current instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="33" name="Memory Grants Pending" description="Memory Grants Pending value for current instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT @@SERVERNAME AS [Server Name], [object_name], cntr_value AS [Memory Grants Pending]                                                                                                       
 FROM sys.dm_os_performance_counters WITH (NOLOCK)
 WHERE [object_name] LIKE N'%Memory Manager%' -- Handles named instances
@@ -4914,7 +4914,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 53) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="53" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="53" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                query_plan, cp.objtype, cp.usecounts
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -4932,7 +4932,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 49) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="49" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="49" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                query_plan, cp.objtype, cp.usecounts
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -5045,7 +5045,7 @@ ORDER BY index_advantage DESC OPTION (RECOMPILE);
 
 
 // Missing Indexes for current database by Index Advantage  (Query 52) (Missing Indexes)-->
-    <Query id="52" name="Missing Indexes" description="Missing Indexes for current database by Index Advantage" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="52" name="Missing Indexes" description="Missing Indexes for current database by Index Advantage" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT DISTINCT CONVERT(decimal(18,2), user_seeks * avg_total_user_cost * (avg_user_impact * 0.01)) AS [index_advantage], 
 migs.last_user_seek, mid.[statement] AS [Database.Schema.Table],
 mid.equality_columns, mid.inequality_columns, mid.included_columns,
@@ -5069,7 +5069,7 @@ ORDER BY index_advantage DESC OPTION (RECOMPILE);
 
 
 // Missing Indexes for current database by Index Advantage  (Query 48) (Missing Indexes)-->
-    <Query id="48" name="Missing Indexes" description="Missing Indexes for current database by Index Advantage" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="48" name="Missing Indexes" description="Missing Indexes for current database by Index Advantage" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT DISTINCT CONVERT(decimal(18,2), user_seeks * avg_total_user_cost * (avg_user_impact * 0.01)) AS [index_advantage], 
 migs.last_user_seek, mid.[statement] AS [Database.Schema.Table],
 mid.equality_columns, mid.inequality_columns, mid.included_columns,
@@ -5223,7 +5223,7 @@ ORDER BY index_advantage DESC OPTION (RECOMPILE);
 
 
 // Missing Indexes for all databases by Index Advantage  (Query 22) (Missing Indexes All Databases)-->
-    <Query id="22" name="Missing Indexes All Databases" description="Missing Indexes for all databases by Index Advantage" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="22" name="Missing Indexes All Databases" description="Missing Indexes for all databases by Index Advantage" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT CONVERT(decimal(18,2), user_seeks * avg_total_user_cost * (avg_user_impact * 0.01)) AS [index_advantage],  
 migs.last_user_seek, mid.[statement] AS [Database.Schema.Table],
 mid.equality_columns, mid.inequality_columns, mid.included_columns,
@@ -5250,7 +5250,7 @@ ORDER BY index_advantage DESC OPTION (RECOMPILE);
 
 
 // Missing Indexes for all databases by Index Advantage  (Query 18) (Missing Indexes All Databases)-->
-    <Query id="18" name="Missing Indexes All Databases" description="Missing Indexes for all databases by Index Advantage" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="18" name="Missing Indexes All Databases" description="Missing Indexes for all databases by Index Advantage" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT CONVERT(decimal(18,2), user_seeks * avg_total_user_cost * (avg_user_impact * 0.01)) AS [index_advantage], 
 migs.last_user_seek, mid.[statement] AS [Database.Schema.Table],
 mid.equality_columns, mid.inequality_columns, mid.included_columns,
@@ -5389,7 +5389,7 @@ ORDER BY user_seeks + user_scans + user_lookups DESC OPTION (RECOMPILE); -- Orde
 
 
 //- Index Read/Write stats (all tables in current DB) ordered by Reads  (Query 61) (Overall Index Usage - Reads)-->
-    <Query id="61" name="Overall Index Usage - Reads" description="- Index Read/Write stats (all tables in current DB) ordered by Reads" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="61" name="Overall Index Usage - Reads" description="- Index Read/Write stats (all tables in current DB) ordered by Reads" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(s.[object_id]) AS [ObjectName], i.name AS [IndexName], i.index_id,
 	   user_seeks + user_scans + user_lookups AS [Reads], s.user_updates AS [Writes],  
 	   i.type_desc AS [IndexType], i.fill_factor AS [FillFactor], i.has_filter, i.filter_definition, 
@@ -5409,7 +5409,7 @@ ORDER BY user_seeks + user_scans + user_lookups DESC OPTION (RECOMPILE); -- Orde
 
 
 //- Index Read/Write stats (all tables in current DB) ordered by Reads  (Query 56) (Overall Index Usage - Reads)-->
-    <Query id="56" name="Overall Index Usage - Reads" description="- Index Read/Write stats (all tables in current DB) ordered by Reads" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="56" name="Overall Index Usage - Reads" description="- Index Read/Write stats (all tables in current DB) ordered by Reads" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(s.[object_id]) AS [ObjectName], i.name AS [IndexName], i.index_id,
 	   user_seeks + user_scans + user_lookups AS [Reads], s.user_updates AS [Writes],  
 	   i.type_desc AS [IndexType], i.fill_factor AS [FillFactor], i.has_filter, i.filter_definition, 
@@ -5536,7 +5536,7 @@ ORDER BY s.user_updates DESC OPTION (RECOMPILE);						 -- Order by writes
 
 
 //- Index Read/Write stats (all tables in current DB) ordered by Writes  (Query 62) (Overall Index Usage - Writes)-->
-    <Query id="62" name="Overall Index Usage - Writes" description="- Index Read/Write stats (all tables in current DB) ordered by Writes" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="62" name="Overall Index Usage - Writes" description="- Index Read/Write stats (all tables in current DB) ordered by Writes" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(s.[object_id]) AS [ObjectName], i.name AS [IndexName], i.index_id,
 	   s.user_updates AS [Writes], user_seeks + user_scans + user_lookups AS [Reads], 
 	   i.type_desc AS [IndexType], i.fill_factor AS [FillFactor], i.has_filter, i.filter_definition,
@@ -5556,7 +5556,7 @@ ORDER BY s.user_updates DESC OPTION (RECOMPILE);						 -- Order by writes
 
 
 //- Index Read/Write stats (all tables in current DB) ordered by Writes  (Query 57) (Overall Index Usage - Writes)-->
-    <Query id="57" name="Overall Index Usage - Writes" description="- Index Read/Write stats (all tables in current DB) ordered by Writes" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="57" name="Overall Index Usage - Writes" description="- Index Read/Write stats (all tables in current DB) ordered by Writes" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(s.[object_id]) AS [ObjectName], i.name AS [IndexName], i.index_id,
 	   s.user_updates AS [Writes], user_seeks + user_scans + user_lookups AS [Reads], 
 	   i.type_desc AS [IndexType], i.fill_factor AS [FillFactor], i.has_filter, i.filter_definition,
@@ -5666,7 +5666,7 @@ AND counter_name = N'Page life expectancy' OPTION (RECOMPILE);
 
 
 // Page Life Expectancy (PLE) value for each NUMA node in current instance  (Query 36) (PLE by NUMA Node)-->
-    <Query id="36" name="PLE by NUMA Node" description="Page Life Expectancy (PLE) value for each NUMA node in current instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="36" name="PLE by NUMA Node" description="Page Life Expectancy (PLE) value for each NUMA node in current instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT @@SERVERNAME AS [Server Name], [object_name], instance_name, cntr_value AS [Page Life Expectancy]
 FROM sys.dm_os_performance_counters WITH (NOLOCK)
 WHERE [object_name] LIKE N'%Buffer Node%' -- Handles named instances
@@ -5680,7 +5680,7 @@ AND counter_name = N'Page life expectancy' OPTION (RECOMPILE);
 
 
 // Page Life Expectancy (PLE) value for each NUMA node in current instance  (Query 32) (PLE by NUMA Node)-->
-    <Query id="32" name="PLE by NUMA Node" description="Page Life Expectancy (PLE) value for each NUMA node in current instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="32" name="PLE by NUMA Node" description="Page Life Expectancy (PLE) value for each NUMA node in current instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT @@SERVERNAME AS [Server Name], [object_name], instance_name, cntr_value AS [Page Life Expectancy]
 FROM sys.dm_os_performance_counters WITH (NOLOCK)
 WHERE [object_name] LIKE N'%Buffer Node%' -- Handles named instances
@@ -5754,7 +5754,7 @@ AND counter_name = N'Page life expectancy' OPTION (RECOMPILE);
 
 // SQL Server Process Address space info  (Query 35) (Process Memory) 
 // (shows whether locked pages is enabled, among other things)-->
-    <Query id="35" name="Process Memory" description="SQL Server Process Address space info" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="35" name="Process Memory" description="SQL Server Process Address space info" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT physical_memory_in_use_kb/1024 AS [SQL Server Memory Usage (MB)],
        large_page_allocations_kb, locked_page_allocations_kb, page_fault_count, 
 	   memory_utilization_percentage, available_commit_limit_kb, 
@@ -5769,7 +5769,7 @@ FROM sys.dm_os_process_memory WITH (NOLOCK) OPTION (RECOMPILE);
 
 // SQL Server Process Address space info  (Query 31) (Process Memory) 
 // (shows whether locked pages is enabled, among other things)-->
-    <Query id="31" name="Process Memory" description="SQL Server Process Address space info" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="31" name="Process Memory" description="SQL Server Process Address space info" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT physical_memory_in_use_kb/1024 AS [SQL Server Memory Usage (MB)],
        large_page_allocations_kb, locked_page_allocations_kb, page_fault_count, 
 	   memory_utilization_percentage, available_commit_limit_kb, 
@@ -5886,7 +5886,7 @@ EXEC sys.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'HARDWARE\DESCRIPTION\Syste
 
 
 // Get processor description from Windows Registry  (Query 12) (Processor Description)-->
-    <Query id="12" name="Processor Description" description="Get processor description from Windows Registry" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="12" name="Processor Description" description="Get processor description from Windows Registry" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 EXEC sys.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'HARDWARE\DESCRIPTION\System\CentralProcessor\0', N'ProcessorNameString';
 ]]></Query>
     <!--////// 
@@ -5896,7 +5896,7 @@ EXEC sys.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'HARDWARE\DESCRIPTION\Syste
 
 
 // Get processor description from Windows Registry  (Query 10) (Processor Description)-->
-    <Query id="10" name="Processor Description" description="Get processor description from Windows Registry" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="10" name="Processor Description" description="Get processor description from Windows Registry" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 EXEC sys.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'HARDWARE\DESCRIPTION\System\CentralProcessor\0', N'ProcessorNameString';
 ]]></Query>
     <!--////// 
@@ -5956,7 +5956,7 @@ EXEC sys.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'HARDWARE\DESCRIPTION\Syste
 
 // Top cached queries by Execution Count (SQL Server 2008 R2)  (Query 42) (Query Execution Counts)
 // SQL Server 2008 R2 SP1 and greater only-->
-    <Query id="42" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="42" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP (100) qs.execution_count, qs.total_rows, qs.last_rows, qs.min_rows, qs.max_rows,
 qs.last_elapsed_time, qs.min_elapsed_time, qs.max_elapsed_time,
 total_worker_time, total_logical_reads, 
@@ -5976,7 +5976,7 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Top cached queries by Execution Count (SQL Server 2008)  (Query 38) (Query Execution Counts)-->
-    <Query id="38" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="38" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP (100) qs.execution_count, qs.total_worker_time, qs.total_logical_reads, qs.total_elapsed_time,
 SUBSTRING(qt.TEXT,qs.statement_start_offset/2 +1,
 (CASE WHEN qs.statement_end_offset = -1
@@ -6138,7 +6138,7 @@ ORDER BY bs.backup_finish_date DESC OPTION (RECOMPILE);
 
 
 // Look at recent Full backups for the current database (Query 64) (Recent Full Backups)-->
-    <Query id="64" name="Recent Full Backups" description="Look at recent Full backups for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="64" name="Recent Full Backups" description="Look at recent Full backups for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP (30) bs.machine_name, bs.server_name, bs.database_name AS [Database Name], bs.recovery_model,
 CONVERT (BIGINT, bs.backup_size / 1048576 ) AS [Uncompressed Backup Size (MB)],
 CONVERT (BIGINT, bs.compressed_backup_size / 1048576 ) AS [Compressed Backup Size (MB)],
@@ -6159,7 +6159,7 @@ ORDER BY bs.backup_finish_date DESC OPTION (RECOMPILE);
 
 
 // Look at recent Full backups for the current database (Query 59) (Recent Full Backups)-->
-    <Query id="59" name="Recent Full Backups" description="Look at recent Full backups for the current database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="59" name="Recent Full Backups" description="Look at recent Full backups for the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP (30) bs.machine_name, bs.server_name, bs.database_name AS [Database Name], bs.recovery_model,
 CONVERT (BIGINT, bs.backup_size / 1048576 ) AS [Uncompressed Backup Size (MB)],
 CONVERT (BIGINT, bs.compressed_backup_size / 1048576 ) AS [Compressed Backup Size (MB)],
@@ -6289,7 +6289,7 @@ SERVERPROPERTY('IsIntegratedSecurityOnly') AS [IsIntegratedSecurityOnly];
 
 
 // Get selected server properties (Query 3) (Server Properties)-->
-    <Query id="3" name="Server Properties" description="Get selected server properties" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="3" name="Server Properties" description="Get selected server properties" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT SERVERPROPERTY('MachineName') AS [MachineName], SERVERPROPERTY('ServerName') AS [ServerName],  
 SERVERPROPERTY('InstanceName') AS [Instance], SERVERPROPERTY('IsClustered') AS [IsClustered], 
 SERVERPROPERTY('ComputerNamePhysicalNetBIOS') AS [ComputerNamePhysicalNetBIOS], 
@@ -6305,7 +6305,7 @@ SERVERPROPERTY('IsIntegratedSecurityOnly') AS [IsIntegratedSecurityOnly];
 
 
 // Get selected server properties (Query 3) (Server Properties)-->
-    <Query id="3" name="Server Properties" description="Get selected server properties" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="3" name="Server Properties" description="Get selected server properties" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT SERVERPROPERTY('MachineName') AS [MachineName], SERVERPROPERTY('ServerName') AS [ServerName],  
 SERVERPROPERTY('InstanceName') AS [Instance], SERVERPROPERTY('IsClustered') AS [IsClustered], 
 SERVERPROPERTY('ComputerNamePhysicalNetBIOS') AS [ComputerNamePhysicalNetBIOS], 
@@ -6539,7 +6539,7 @@ WHERE wait_type NOT IN (
 
 
 // Signal Waits for instance  (Query 28) (Signal Waits)-->
-    <Query id="28" name="Signal Waits" description="Signal Waits for instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="28" name="Signal Waits" description="Signal Waits for instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT CAST(100.0 * SUM(signal_wait_time_ms) / SUM (wait_time_ms) AS NUMERIC(20,2)) AS [% Signal (CPU) Waits],
 CAST(100.0 * SUM(wait_time_ms - signal_wait_time_ms) / SUM (wait_time_ms) AS NUMERIC(20,2)) AS [% Resource Waits]
 FROM sys.dm_os_wait_stats WITH (NOLOCK)
@@ -6587,7 +6587,7 @@ WHERE wait_type NOT IN (
 
 
 // Signal Waits for instance  (Query 24) (Signal Waits)-->
-    <Query id="24" name="Signal Waits" description="Signal Waits for instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="24" name="Signal Waits" description="Signal Waits for instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT CAST(100.0 * SUM(signal_wait_time_ms) / SUM (wait_time_ms) AS NUMERIC(20,2)) AS [% Signal (CPU) Waits],
 CAST(100.0 * SUM(wait_time_ms - signal_wait_time_ms) / SUM (wait_time_ms) AS NUMERIC(20,2)) AS [% Resource Waits]
 FROM sys.dm_os_wait_stats WITH (NOLOCK)
@@ -6639,7 +6639,7 @@ ORDER BY qs.total_elapsed_time/qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Avg Elapsed Time (SQL 2008 R2)  (Query 44) (SP Avg Elapsed Time) -->
-    <Query id="44" name="SP Avg Elapsed Time" description="Top Cached SPs By Avg Elapsed Time (SQL 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="44" name="SP Avg Elapsed Time" description="Top Cached SPs By Avg Elapsed Time (SQL 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_elapsed_time/qs.execution_count AS [avg_elapsed_time], 
 qs.total_elapsed_time, qs.execution_count, ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, 
 GETDATE()), 0) AS [Calls/Minute], qs.total_worker_time/qs.execution_count AS [AvgWorkerTime], 
@@ -6657,7 +6657,7 @@ ORDER BY avg_elapsed_time DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Avg Elapsed Time (SQL 2008)  (Query 40) (SP Avg Elapsed Time)-->
-    <Query id="40" name="SP Avg Elapsed Time" description="Top Cached SPs By Avg Elapsed Time (SQL 2008)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="40" name="SP Avg Elapsed Time" description="Top Cached SPs By Avg Elapsed Time (SQL 2008)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_elapsed_time/qs.execution_count AS [avg_elapsed_time], 
 qs.total_elapsed_time, qs.execution_count, ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, 
 GETDATE()), 0) AS [Calls/Minute], qs.total_worker_time/qs.execution_count AS [AvgWorkerTime], 
@@ -6755,7 +6755,7 @@ ORDER BY avg_elapsed_time DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Avg Elapsed Time with execution time variability   (Query 45) (SP Avg Elapsed Variable Time)-->
-    <Query id="45" name="SP Avg Elapsed Variable Time" description="Top Cached SPs By Avg Elapsed Time with execution time variability" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="45" name="SP Avg Elapsed Variable Time" description="Top Cached SPs By Avg Elapsed Time with execution time variability" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.execution_count, qs.min_elapsed_time,
 qs.total_elapsed_time/qs.execution_count AS [avg_elapsed_time],
 qs.max_elapsed_time, qs.last_elapsed_time,  qs.cached_time
@@ -6772,7 +6772,7 @@ ORDER BY avg_elapsed_time DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Avg Elapsed Time with execution time variability   (Query 41) (SP Avg Elapsed Variable Time)-->
-    <Query id="41" name="SP Avg Elapsed Variable Time" description="Top Cached SPs By Avg Elapsed Time with execution time variability" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="41" name="SP Avg Elapsed Variable Time" description="Top Cached SPs By Avg Elapsed Time with execution time variability" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.execution_count, qs.min_elapsed_time,
 qs.total_elapsed_time/qs.execution_count AS [avg_elapsed_time],
 qs.max_elapsed_time, qs.last_elapsed_time,  qs.cached_time
@@ -6810,7 +6810,7 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Execution Count (SQL 2008 R2) (Query 43) (SP Execution Counts)-->
-    <Query id="43" name="SP Execution Counts" description="Top Cached SPs By Execution Count (SQL 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="43" name="SP Execution Counts" description="Top Cached SPs By Execution Count (SQL 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(100) p.name AS [SP Name], qs.execution_count,
 ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute],
 qs.total_worker_time/qs.execution_count AS [AvgWorkerTime], qs.total_worker_time AS [TotalWorkerTime],  
@@ -6829,7 +6829,7 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Execution Count (SQL 2008) (Query 39) (SP Execution Counts)-->
-    <Query id="39" name="SP Execution Counts" description="Top Cached SPs By Execution Count (SQL 2008)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="39" name="SP Execution Counts" description="Top Cached SPs By Execution Count (SQL 2008)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(100) p.name AS [SP Name], qs.execution_count,
 ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute],
 qs.total_worker_time/qs.execution_count AS [AvgWorkerTime], qs.total_worker_time AS [TotalWorkerTime],  
@@ -6942,7 +6942,7 @@ ORDER BY total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Total Logical Reads (SQL 2008). Logical reads relate to memory pressure  (Query 43) (SP Logical Reads)-->
-    <Query id="43" name="SP Logical Reads" description="Top Cached SPs By Total Logical Reads (SQL 2008). Logical reads relate to memory pressure" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="43" name="SP Logical Reads" description="Top Cached SPs By Total Logical Reads (SQL 2008). Logical reads relate to memory pressure" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_logical_reads AS [TotalLogicalReads], 
 qs.total_logical_reads/qs.execution_count AS [AvgLogicalReads],qs.execution_count, 
 ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute], 
@@ -7060,7 +7060,7 @@ ORDER BY total_logical_writes DESC OPTION (RECOMPILE);
 ]]></Query>
     <!--// Top Cached SPs By Total Logical Writes (SQL 2008 R2)  (Query 49) (SP Logical Writes)
    // Logical writes relate to both memory and disk I/O pressure -->
-    <Query id="49" name="SP Logical Writes" description="Top Cached SPs By Total Logical Writes (SQL 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="49" name="SP Logical Writes" description="Top Cached SPs By Total Logical Writes (SQL 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_logical_writes AS [TotalLogicalWrites], 
 qs.total_logical_writes/qs.execution_count AS [AvgLogicalWrites], qs.execution_count,
 ISNULL(qs.execution_count/DATEDIFF(Second, qs.cached_time, GETDATE()), 0) AS [Calls/Second],
@@ -7075,7 +7075,7 @@ ORDER BY qs.total_logical_writes DESC OPTION (RECOMPILE);
 ]]></Query>
     <!--// Top Cached SPs By Total Logical Writes (SQL 2008)  (Query 45) (SP Logical Writes) 
    // Logical writes relate to both memory and disk I/O pressure -->
-    <Query id="45" name="SP Logical Writes" description="Top Cached SPs By Total Logical Writes (SQL 2008)" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="45" name="SP Logical Writes" description="Top Cached SPs By Total Logical Writes (SQL 2008)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_logical_writes AS [TotalLogicalWrites], 
 qs.total_logical_writes/qs.execution_count AS [AvgLogicalWrites], qs.execution_count,
 ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute],
@@ -7149,7 +7149,7 @@ ORDER BY qs.total_physical_reads DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Total Physical Reads (SQL 2008 R2). Physical reads relate to disk I/O pressure  (Query 48) (SP Physical Reads)-->
-    <Query id="48" name="SP Physical Reads" description="Top Cached SPs By Total Physical Reads (SQL 2008 R2). Physical reads relate to disk I/O pressure" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="48" name="SP Physical Reads" description="Top Cached SPs By Total Physical Reads (SQL 2008 R2). Physical reads relate to disk I/O pressure" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name],qs.total_physical_reads AS [TotalPhysicalReads], 
 qs.total_physical_reads/qs.execution_count AS [AvgPhysicalReads], qs.execution_count, 
 qs.total_logical_reads,qs.total_elapsed_time, qs.total_elapsed_time/qs.execution_count 
@@ -7168,7 +7168,7 @@ ORDER BY qs.total_physical_reads DESC, qs.total_logical_reads DESC OPTION (RECOM
 
 
 // Top Cached SPs By Total Physical Reads (SQL 2008). Physical reads relate to disk I/O pressure  (Query 44) (SP Physical Reads)-->
-    <Query id="44" name="SP Physical Reads" description="Top Cached SPs By Total Physical Reads (SQL 2008). Physical reads relate to disk I/O pressure" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="44" name="SP Physical Reads" description="Top Cached SPs By Total Physical Reads (SQL 2008). Physical reads relate to disk I/O pressure" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name],qs.total_physical_reads AS [TotalPhysicalReads], 
 qs.total_physical_reads/qs.execution_count AS [AvgPhysicalReads], qs.execution_count, 
 qs.total_logical_reads,qs.total_elapsed_time, qs.total_elapsed_time/qs.execution_count 
@@ -7282,7 +7282,7 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Total Worker time (SQL 2008 R2). Worker time relates to CPU cost  (Query 46) (SP Worker Time)-->
-    <Query id="46" name="SP Worker Time" description="Top Cached SPs By Total Worker time (SQL 2008 R2). Worker time relates to CPU cost" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="46" name="SP Worker Time" description="Top Cached SPs By Total Worker time (SQL 2008 R2). Worker time relates to CPU cost" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_worker_time AS [TotalWorkerTime], 
 qs.total_worker_time/qs.execution_count AS [AvgWorkerTime], qs.execution_count, 
 ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute],
@@ -7317,7 +7317,7 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Top Cached SPs By Total Worker time (SQL 2008). Worker time relates to CPU cost  (Query 42) (SP Worker Time)-->
-    <Query id="42" name="SP Worker Time" description="Top Cached SPs By Total Worker time (SQL 2008). Worker time relates to CPU cost" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="42" name="SP Worker Time" description="Top Cached SPs By Total Worker time (SQL 2008). Worker time relates to CPU cost" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(25) p.name AS [SP Name], qs.total_worker_time AS [TotalWorkerTime], 
 qs.total_worker_time/qs.execution_count AS [AvgWorkerTime], qs.execution_count, 
 ISNULL(qs.execution_count/DATEDIFF(Minute, qs.cached_time, GETDATE()), 0) AS [Calls/Minute],
@@ -7443,7 +7443,7 @@ ORDER BY name OPTION (RECOMPILE);
 
 
 // Get SQL Server Agent Alert Information (Query 5) (SQL Server Agent Alerts)-->
-    <Query id="5" name="SQL Server Agent Alerts" description="Get SQL Server Agent Alert Information" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="5" name="SQL Server Agent Alerts" description="Get SQL Server Agent Alert Information" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT name, event_source, message_id, severity, [enabled], has_notification, 
        delay_between_responses, occurrence_count, last_occurrence_date, last_occurrence_time
 FROM msdb.dbo.sysalerts WITH (NOLOCK)
@@ -7461,7 +7461,7 @@ ORDER BY name OPTION (RECOMPILE);
 
 
 // Get SQL Server Agent Alert Information (Query 5) (SQL Server Agent Alerts)-->
-    <Query id="5" name="SQL Server Agent Alerts" description="Get SQL Server Agent Alert Information" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="5" name="SQL Server Agent Alerts" description="Get SQL Server Agent Alert Information" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT name, event_source, message_id, severity, [enabled], has_notification, 
        delay_between_responses, occurrence_count, last_occurrence_date, last_occurrence_time
 FROM msdb.dbo.sysalerts WITH (NOLOCK)
@@ -7576,7 +7576,7 @@ ORDER BY sj.name OPTION (RECOMPILE);
 
 
 // Get SQL Server Agent jobs and Category information (Query 4) (SQL Server Agent Jobs)-->
-    <Query id="4" name="SQL Server Agent Jobs" description="Get SQL Server Agent jobs and Category information" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="4" name="SQL Server Agent Jobs" description="Get SQL Server Agent jobs and Category information" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT sj.name AS [JobName], sj.[description] AS [JobDescription], SUSER_SNAME(sj.owner_sid) AS [JobOwner],
 sj.date_created, sj.[enabled], sj.notify_email_operator_id, sj.notify_level_email, sc.name AS [CategoryName],
 js.next_run_date, js.next_run_time
@@ -7594,7 +7594,7 @@ ORDER BY sj.name OPTION (RECOMPILE);
 
 
 // Get SQL Server Agent jobs and Category information (Query 4) (SQL Server Agent Jobs)-->
-    <Query id="4" name="SQL Server Agent Jobs" description="Get SQL Server Agent jobs and Category information" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="4" name="SQL Server Agent Jobs" description="Get SQL Server Agent jobs and Category information" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT sj.name AS [JobName], sj.[description] AS [JobDescription], SUSER_SNAME(sj.owner_sid) AS [JobOwner],
 sj.date_created, sj.[enabled], sj.notify_email_operator_id, sj.notify_level_email, sc.name AS [CategoryName],
 js.next_run_date, js.next_run_time
@@ -7798,7 +7798,7 @@ OR name = N'NT AUTHORITY\NETWORK SERVICE' OPTION (RECOMPILE);
 // http://support2.microsoft.com/kb/2979597
 
 // When was SQL Server installed  (Query 2) (SQL Server Install Date) -->
-    <Query id="2" name="SQL Server Install Date" description="When was SQL Server installed" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="2" name="SQL Server Install Date" description="When was SQL Server installed" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT @@SERVERNAME AS [Server Name], create_date AS [SQL Server Install Date] 
 FROM sys.server_principals WITH (NOLOCK)
 WHERE name = N'NT AUTHORITY\SYSTEM'
@@ -7871,7 +7871,7 @@ OR name = N'NT AUTHORITY\NETWORK SERVICE' OPTION (RECOMPILE);
 
 
 // When was SQL Server installed  (Query 2) (SQL Server Install Date)   -->
-    <Query id="2" name="SQL Server Install Date" description="When was SQL Server installed" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="2" name="SQL Server Install Date" description="When was SQL Server installed" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT @@SERVERNAME AS [Server Name], create_date AS [SQL Server Install Date] 
 FROM sys.server_principals WITH (NOLOCK)
 WHERE name = N'NT AUTHORITY\SYSTEM'
@@ -7885,7 +7885,7 @@ OR name = N'NT AUTHORITY\NETWORK SERVICE' OPTION (RECOMPILE);
 
 
 // SQL Server NUMA Node information  (Query 9) (SQL Server NUMA Info)-->
-    <Query id="9" name="SQL Server NUMA Info" description="SQL Server NUMA Node information" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="9" name="SQL Server NUMA Info" description="SQL Server NUMA Node information" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT node_id, node_state_desc, memory_node_id, processor_group, online_scheduler_count, 
        active_worker_count, avg_load_balance, resource_monitor_state
 FROM sys.dm_os_nodes WITH (NOLOCK) 
@@ -7913,7 +7913,7 @@ WHERE node_state_desc <> N'ONLINE DAC' OPTION (RECOMPILE);
 
 
 // SQL Server NUMA Node information  (Query 7) (SQL Server NUMA Info)-->
-    <Query id="7" name="SQL Server NUMA Info" description="SQL Server NUMA Node information" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="7" name="SQL Server NUMA Info" description="SQL Server NUMA Node information" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT node_id, node_state_desc, memory_node_id, online_scheduler_count, 
        active_worker_count, avg_load_balance, resource_monitor_state
 FROM sys.dm_os_nodes WITH (NOLOCK) 
@@ -8084,7 +8084,7 @@ WHERE node_state_desc <> N'ONLINE DAC' OPTION (RECOMPILE);
 
 
 // SQL Server Services information (SQL Server 2008 R2 SP1 or greater)  (Query 8) (SQL Server Services Info)-->
-    <Query id="8" name="SQL Server Services Info" description="SQL Server Services information (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="8" name="SQL Server Services Info" description="SQL Server Services information (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT servicename, process_id, startup_type_desc, status_desc, 
 last_startup_time, service_account, is_clustered, cluster_nodename, [filename]
 FROM sys.dm_server_services WITH (NOLOCK) OPTION (RECOMPILE);
@@ -8197,7 +8197,7 @@ ORDER BY STATS_DATE(i.[object_id], i.index_id) DESC OPTION (RECOMPILE);
 
 
 // When were Statistics last updated on all indexes?  (Query 58) (Statistics Update)-->
-    <Query id="58" name="Statistics Update" description="When were Statistics last updated on all indexes?" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="58" name="Statistics Update" description="When were Statistics last updated on all indexes?" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT SCHEMA_NAME(o.Schema_ID) + N'.' + o.NAME AS [Object Name], o.type_desc AS [Object Type],
       i.name AS [Index Name], STATS_DATE(i.[object_id], i.index_id) AS [Statistics Date], 
       s.auto_created, s.no_recompute, s.user_created, st.row_count, st.used_page_count
@@ -8223,7 +8223,7 @@ ORDER BY STATS_DATE(i.[object_id], i.index_id) DESC OPTION (RECOMPILE);
 
 
 // When were Statistics last updated on all indexes?  (Query 54) (Statistics Update)-->
-    <Query id="54" name="Statistics Update" description="When were Statistics last updated on all indexes?" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="54" name="Statistics Update" description="When were Statistics last updated on all indexes?" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT SCHEMA_NAME(o.Schema_ID) + N'.' + o.NAME AS [Object Name], o.type_desc AS [Object Type],
       i.name AS [Index Name], STATS_DATE(i.[object_id], i.index_id) AS [Statistics Date], 
       s.auto_created, s.no_recompute, s.user_created, st.row_count, st.used_page_count
@@ -8370,7 +8370,7 @@ EXEC sys.xp_readerrorlog 0, 1, N'Manufacturer';
 // Get System Manufacturer and model number from  (Query 11) (System Manufacturer)
 // SQL Server Error log. This query might take a few seconds 
 // if you have not recycled your error log recently-->
-    <Query id="11" name="System Manufacturer" description="Get System Manufacturer and model number from" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="11" name="System Manufacturer" description="Get System Manufacturer and model number from" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 EXEC sys.xp_readerrorlog 0, 1, N'Manufacturer';
 ]]></Query>
     <!--//////
@@ -8381,7 +8381,7 @@ EXEC sys.xp_readerrorlog 0, 1, N'Manufacturer';
 // Get System Manufacturer and model number from  (Query 9) (System Manufacturer)
 // SQL Server Error log. This query might take a few seconds 
 // if you have not recycled your error log recently-->
-    <Query id="9" name="System Manufacturer" description="Get System Manufacturer and model number from" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="9" name="System Manufacturer" description="Get System Manufacturer and model number from" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 EXEC sys.xp_readerrorlog 0, 1, N'Manufacturer';
 ]]></Query>
     <!--//////
@@ -8416,7 +8416,7 @@ EXEC sys.xp_readerrorlog 0, 1, N'Manufacturer';
 
 
 // Good basic information about OS memory amounts and state  (Query 34) (System Memory)-->
-    <Query id="34" name="System Memory" description="Good basic information about OS memory amounts and state" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="34" name="System Memory" description="Good basic information about OS memory amounts and state" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT total_physical_memory_kb/1024 AS [Physical Memory (MB)], 
        available_physical_memory_kb/1024 AS [Available Memory (MB)], 
        total_page_file_kb/1024 AS [Total Page File (MB)], 
@@ -8433,7 +8433,7 @@ FROM sys.dm_os_sys_memory WITH (NOLOCK) OPTION (RECOMPILE);
 
 
 // Good basic information about OS memory amounts and state  (Query 30) (System Memory)-->
-    <Query id="30" name="System Memory" description="Good basic information about OS memory amounts and state" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="30" name="System Memory" description="Good basic information about OS memory amounts and state" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT total_physical_memory_kb/1024 AS [Physical Memory (MB)], 
        available_physical_memory_kb/1024 AS [Available Memory (MB)], 
        total_page_file_kb/1024 AS [Total Page File (MB)], 
@@ -8537,7 +8537,7 @@ FROM sys.dm_os_sys_memory WITH (NOLOCK) OPTION (RECOMPILE);
 
 
 // Get some key table properties (Query 56) (Table Properties)-->
-    <Query id="56" name="Table Properties" description="Get some key table properties" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="56" name="Table Properties" description="Get some key table properties" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT [name], create_date, lock_on_bulk_load, is_replicated, has_replication_filter, 
        is_tracked_by_cdc, lock_escalation_desc
 FROM sys.tables WITH (NOLOCK) 
@@ -8549,7 +8549,7 @@ ORDER BY [name] OPTION (RECOMPILE);
 
 
 // Get some key table properties (Query 52) (Table Properties)-->
-    <Query id="52" name="Table Properties" description="Get some key table properties" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="52" name="Table Properties" description="Get some key table properties" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT [name], create_date, lock_on_bulk_load, is_replicated, has_replication_filter, 
        is_tracked_by_cdc, lock_escalation_desc
 FROM sys.tables WITH (NOLOCK) 
@@ -8656,7 +8656,7 @@ ORDER BY SUM(Rows) DESC OPTION (RECOMPILE);
 
 
 // Get Table names, row counts, and compression status for clustered index or heap  (Query 55) (Table Sizes)-->
-    <Query id="55" name="Table Sizes" description="Get Table names, row counts, and compression status for clustered index or heap" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="55" name="Table Sizes" description="Get Table names, row counts, and compression status for clustered index or heap" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(object_id) AS [ObjectName], 
 SUM(Rows) AS [RowCount], data_compression_desc AS [CompressionType]
 FROM sys.partitions WITH (NOLOCK)
@@ -8677,7 +8677,7 @@ ORDER BY SUM(Rows) DESC OPTION (RECOMPILE);
 
 
 // Get Table names, row counts, and compression status for clustered index or heap  (Query 51) (Table Sizes)-->
-    <Query id="51" name="Table Sizes" description="Get Table names, row counts, and compression status for clustered index or heap" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="51" name="Table Sizes" description="Get Table names, row counts, and compression status for clustered index or heap" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT OBJECT_NAME(object_id) AS [ObjectName], 
 SUM(Rows) AS [RowCount], data_compression_desc AS [CompressionType]
 FROM sys.partitions WITH (NOLOCK)
@@ -8950,7 +8950,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 50) (Top IO Statements)-->
-    <Query id="50" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="50" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -8971,7 +8971,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 46) (Top IO Statements)-->
-    <Query id="46" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="46" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -9264,7 +9264,7 @@ OPTION (RECOMPILE);
 // DBCC SQLPERF('sys.dm_os_wait_stats', CLEAR);
 
 // Isolate top waits for server instance since last restart or wait statistics clear (Query 27) (Top Waits)-->
-    <Query id="27" name="Top Waits" description="Isolate top waits for server instance since last restart or wait statistics clear" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="27" name="Top Waits" description="Isolate top waits for server instance since last restart or wait statistics clear" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 WITH [Waits] 
 AS (SELECT wait_type, wait_time_ms/ 1000.0 AS [WaitS],
           (wait_time_ms - signal_wait_time_ms) / 1000.0 AS [ResourceS],
@@ -9321,7 +9321,7 @@ OPTION (RECOMPILE);
 // DBCC SQLPERF('sys.dm_os_wait_stats', CLEAR);
 
 // Isolate top waits for server instance since last restart or wait statistics clear (Query 23) (Top Waits)-->
-    <Query id="23" name="Top Waits" description="Isolate top waits for server instance since last restart or wait statistics clear" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="23" name="Top Waits" description="Isolate top waits for server instance since last restart or wait statistics clear" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 WITH [Waits] 
 AS (SELECT wait_type, wait_time_ms/ 1000.0 AS [WaitS],
           (wait_time_ms - signal_wait_time_ms) / 1000.0 AS [ResourceS],
@@ -9632,7 +9632,7 @@ OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 33) (Top Worker Time Queries)-->
-    <Query id="33" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="33" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], t.[text] AS [Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
@@ -9653,7 +9653,7 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 29) (Top Worker Time Queries)-->
-    <Query id="29" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="29" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], t.[text] AS [Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
@@ -9802,7 +9802,7 @@ ORDER BY [Buffer Pool Rank] OPTION (RECOMPILE);
 
 // Get total buffer usage by database for current instance  (Query 26) (Total Buffer Usage by Database)
 // This make take some time to run on a busy instance-->
-    <Query id="26" name="Total Buffer Usage by Database" description="Get total buffer usage by database for current instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="26" name="Total Buffer Usage by Database" description="Get total buffer usage by database for current instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 WITH AggregateBufferPoolUsage
 AS
 (SELECT DB_NAME(database_id) AS [Database Name],
@@ -9822,7 +9822,7 @@ ORDER BY [Buffer Pool Rank] OPTION (RECOMPILE);
 
 // Get total buffer usage by database for current instance  (Query 22) (Total Buffer Usage by Database)
 // This make take some time to run on a busy instance-->
-    <Query id="22" name="Total Buffer Usage by Database" description="Get total buffer usage by database for current instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="22" name="Total Buffer Usage by Database" description="Get total buffer usage by database for current instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 WITH AggregateBufferPoolUsage
 AS
 (SELECT DB_NAME(database_id) AS [Database Name],
@@ -10027,7 +10027,7 @@ DROP TABLE #VLFCountResults;
 
 // Get VLF Counts for all databases on the instance (Query 23) (VLF Counts)
 // (adapted from Michelle Ufford) -->
-    <Query id="23" name="VLF Counts" description="Get VLF Counts for all databases on the instance" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="23" name="VLF Counts" description="Get VLF Counts for all databases on the instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 CREATE TABLE #VLFInfo (FileID  int,
 					   FileSize bigint, StartOffset bigint,
 					   FSeqNo      bigint, [Status]    bigint,
@@ -10065,7 +10065,7 @@ DROP TABLE #VLFCountResults;
 
 // Get VLF Counts for all databases on the instance (Query 19) (VLF Counts)
 // (adapted from Michelle Ufford) -->
-    <Query id="19" name="VLF Counts" description="Get VLF Counts for all databases on the instance" file="SQL Server 2008.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="19" name="VLF Counts" description="Get VLF Counts for all databases on the instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
 CREATE TABLE #VLFInfo (FileID  int,
 					   FileSize bigint, StartOffset bigint,
 					   FSeqNo      bigint, [Status]    bigint,
@@ -10251,7 +10251,7 @@ DROP TABLE #VLFCountResults;
 
 // Look at most frequently modified indexes and statistics (Query 59) (Volatile Indexes)
 // Requires SQL Server 2008 R2 SP2 or newer-->
-    <Query id="59" name="Volatile Indexes" description="Look at most frequently modified indexes and statistics" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="59" name="Volatile Indexes" description="Look at most frequently modified indexes and statistics" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
 SELECT o.name AS [Object Name], o.[object_id], o.type_desc, s.name AS [Statistics Name], 
        s.stats_id, s.no_recompute, s.auto_created, 
 	   sp.modification_counter, sp.rows, sp.rows_sampled, sp.last_updated
@@ -10368,7 +10368,7 @@ ORDER BY sp.modification_counter DESC, o.name OPTION (RECOMPILE);
 
 
 // Volume info for all LUNS that have database files on the current instance (SQL Server 2008 R2 SP1 or greater)  (Query 17) (Volume Info)-->
-    <Query id="17" name="Volume Info" description="Volume info for all LUNS that have database files on the current instance (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="17" name="Volume Info" description="Volume info for all LUNS that have database files on the current instance (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT DISTINCT vs.volume_mount_point, vs.file_system_type, 
 vs.logical_volume_name, CONVERT(DECIMAL(18,2),vs.total_bytes/1073741824.0) AS [Total Size (GB)],
 CONVERT(DECIMAL(18,2),vs.available_bytes/1073741824.0) AS [Available Size (GB)],  
@@ -10486,7 +10486,7 @@ ORDER BY vs.volume_mount_point OPTION (RECOMPILE);
 
 
 // Windows information (SQL Server 2008 R2 SP1 or greater)  (Query 7) (Windows Info)-->
-    <Query id="7" name="Windows Info" description="Windows information (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="7" name="Windows Info" description="Windows information (SQL Server 2008 R2 SP1 or greater)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
 SELECT windows_release, windows_service_pack_level, 
        windows_sku, os_language_version
 FROM sys.dm_os_windows_info WITH (NOLOCK) OPTION (RECOMPILE);
