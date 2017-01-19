@@ -1036,8 +1036,10 @@ qs.max_worker_time AS [Max Worker Time],
 qs.min_elapsed_time AS [Min Elapsed Time], 
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 qs.max_elapsed_time AS [Max Elapsed Time],
-qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time]
---,t.[text] AS [Complete Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.execution_count AS [Execution Count],
+qs.creation_time AS [Creation Time],
+t.[text] AS [Complete Query Text], 
+qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -1050,20 +1052,32 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 -- Get top average elapsed time queries for entire instance (Query 47) (Top Avg Elapsed Time Queries)
-SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
-REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
+-- drop table #QueryStat
+
+SELECT TOP(50) 
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
 qs.min_elapsed_time, qs.max_elapsed_time, qs.last_elapsed_time,
 qs.execution_count AS [Execution Count],  
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads], 
 qs.total_physical_reads/qs.execution_count AS [Avg Physical Reads], 
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time],
-qs.creation_time AS [Creation Time]
-, qp.query_plan AS [Query Plan] -- comment out this column if copying results to Excel
+qs.creation_time AS [Creation Time],
+qs.plan_handle
+into #QueryStat
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
-CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
-CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
 ORDER BY qs.total_elapsed_time/qs.execution_count DESC OPTION (RECOMPILE);
+
+select 
+qs.*,
+DB_NAME(t.[dbid]) AS [Database Name],
+t.[text] as [QueryText],
+qp.query_plan AS [Query Plan] 
+
+from #QueryStat qs
+CROSS APPLY sys.dm_exec_sql_text(qs.plan_handle) AS t 
+CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) AS qp
+
+
 ------
 
 -- Helps you find the highest average elapsed time queries across the entire instance
