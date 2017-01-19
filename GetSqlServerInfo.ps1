@@ -29,11 +29,12 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
     $QueryName = $Query.name
 
     $QueryText = $Query.InnerText
-    # GetQueryText $QueryName
     
     $xmlWriter.WriteStartElement("QueryResults")
     $xmlWriter.WriteAttributeString("name", $QueryName)  
     try  {
+        $StartTime=(GET-DATE)
+        
         $result = RunQuery $QueryText $DatabaseName
         
         foreach ($row in $result) {
@@ -51,9 +52,14 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
            }
            $xmlWriter.WriteEndElement();
         }
+        $EndTime=(GET-DATE)
+        
+        $TimeDiff = ($StartTime-$EndTime).duration()
+
+        Write-Host "$($TimeDiff): Finished query $QueryName $($Query.file)  $($Query.fileVersion)" -foregroundcolor "green"
     } catch [Exception] {
         $Message = $_.Exception.Message
-        Write-Host "Cannot process query $QueryName $($Query.minVersion) : $Message"
+        Write-Host "Cannot process query $QueryName $($Query.file) : $Message" -foregroundcolor "red"
         #$_.Exception.GetType().FullName + ":" + $_.Exception.Message + $OFS + $OFS | Out-File -append $ResultFile -encoding utf8
         $xmlWriter.WriteStartElement("Message")
         $xmlWriter.WriteString($Message)
@@ -120,12 +126,13 @@ Write-Host "Server version is $serverVersion"
 [xml]$Queries = Get-Content $ScriptLocation\Queries\Queries.xml
 
 $queriesToRun = @{}
+$queriesActiveVersion = @{}
 
-foreach ($query in $Queries.Queries.Query | where { (compareSqlVersions $serverVersion  $_.minVersion)  -ge 0 })
+foreach ($query in $Queries.Queries.Query | where { (compareSqlVersions $serverVersion  $_.fileVersion)  -ge 0 })
 {
     if (!$queriesToRun[$query.name]) {
         $queriesToRun[$query.name] = $query
-    } elseif ((compareSqlVersions $query.minVersion $queriesToRun[$query.name].minVersion)  -ge 0) {
+    } elseif ((compareSqlVersions $query.fileVersion $queriesToRun[$query.name].fileVersion)  -ge 0) {
         $queriesToRun[$query.name] = $query
     }
         
