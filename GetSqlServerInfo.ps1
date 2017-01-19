@@ -1,5 +1,5 @@
 param(
-    [string]$Server               = 'OPS80\BID2WIN',
+    [string]$Server               = 'OPSDEPLOY-13',
     [string]$Username             = $null,
     [string]$Password             = $null,
     [string]$IgnoreDatabases      = $null,
@@ -16,10 +16,10 @@ function RunQuery($SqlQuery, $Db)
 
     if ($Username -and $Password) {
         return Invoke-Sqlcmd -Query $SqlQuery -ServerInstance $Server -Database $Db `
-                             -Username $Username -Password $Password `
+                             -Username $Username -Password $Password -QueryTimeout 200 `
                              -AbortOnError -MaxCharLength 100000000 #-OutputSqlErrors 1
     } else {
-        return Invoke-Sqlcmd -Query $SqlQuery -ServerInstance $Server -Database $Db `
+        return Invoke-Sqlcmd -Query $SqlQuery -ServerInstance $Server -QueryTimeout 200 -Database $Db `
                              -AbortOnError -MaxCharLength 100000000 #-OutputSqlErrors 1
     }
 }
