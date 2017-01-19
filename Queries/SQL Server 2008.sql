@@ -329,6 +329,8 @@ DROP TABLE #IOWarningResults;
 
 -- Drive level latency information (Query 15) (Drive Level Latency)
 -- Based on code from Jimmy May
+SELECT tab.[Drive],
+	/* , tab.volume_mount_point AS [Volume Mount Point] */ 
 	CASE 
 		WHEN num_of_reads = 0 THEN 0 
 		ELSE (io_stall_read_ms/num_of_reads) 
