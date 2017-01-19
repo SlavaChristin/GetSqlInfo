@@ -377,6 +377,7 @@ INNER JOIN sys.availability_replicas AS ar WITH (NOLOCK)
 ON drs.group_id = ar.group_id 
 AND drs.replica_id = ar.replica_id
 ORDER BY ag.name, ar.replica_server_name, adc.[database_name] OPTION (RECOMPILE);
+------
 
 -- You will see no results if your instance is not using AlwaysOn AGs
 

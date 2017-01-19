@@ -388,6 +388,7 @@ INNER JOIN sys.availability_replicas AS ar WITH (NOLOCK)
 ON drs.group_id = ar.group_id 
 AND drs.replica_id = ar.replica_id
 ORDER BY ag.name, ar.replica_server_name, adc.[database_name] OPTION (RECOMPILE);
+------
 
 -- You will see no results if your instance is not using AlwaysOn AGs
 
@@ -1556,6 +1557,7 @@ CROSS APPLY sys.dm_exec_input_buffer(es.session_id, NULL) AS ib
 WHERE es.database_id = DB_ID()
 AND es.session_id > 50
 AND es.session_id <> @@SPID OPTION (RECOMPILE);
+------
 
 -- Gives you input buffer information from all non-system sessions for the current database
 -- Replaces DBCC INPUTBUFFER
