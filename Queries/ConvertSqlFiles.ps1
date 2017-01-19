@@ -152,7 +152,6 @@ foreach ($query in $QueriesSorted)
     
     foreach ($eq in $ExistingQueries.Queries.Query) {
         if ($eq.file -eq $query.file.name -and $eq.name -eq  $query.name) {
-            Write-Host "Hello world" -ForegroundColor Blue
             if ($eq.sqlVersionFilter) {
                 $xmlWriter.WriteAttributeString("sqlVersionFilter", $eq.sqlVersionFilter)                
             }
