@@ -12,7 +12,7 @@
 
 
 // Find single-use, ad-hoc queries that are bloating the plan cache (Query 30) (Ad hoc Queries)-->
-    <Query id="30" name="Ad hoc Queries" description="Find single-use, ad-hoc queries that are bloating the plan cache" file="SQL Server 2005.sql" fileVersion="9.0.0" level="server"><![CDATA[
+    <Query id="30" name="Ad hoc Queries" description="Find single-use, ad-hoc queries that are bloating the plan cache" file="SQL Server 2005.sql" fileVersion="9.0.0" level="server" sqlVersionFilter="9.0.0+" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 

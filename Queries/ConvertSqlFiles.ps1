@@ -29,8 +29,10 @@ function ProcessSql($xmlWriter, $comment, $sql, $i, $fileInfo) {
     }
 }
 
+[xml]$ExistingQueries = Get-Content $PSScriptRoot\Queries.xml
+
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$ResultFile = "$PSScriptRoot\Queries.xml"
+$ResultFile = "$PSScriptRoot\QueriesNew.xml"
 
 $xmlWriter = New-Object System.XMl.XmlTextWriter($ResultFile, $Null)
 $xmlWriter.Formatting = "Indented"
@@ -38,7 +40,7 @@ $xmlWriter.Indentation = "4"
 $xmlWriter.WriteStartDocument()
 $xmlWriter.WriteStartElement("Queries")
 
-$Files = 
+$Files = @(
    @{ name = "SQL Server 2005.sql";    version = "9.0.0"   },
    @{ name = "SQL Server 2008.sql";    version = "10.0.0"  },
    @{ name = "SQL Server 2008 R2.sql"; version = "10.50.0" },
@@ -46,6 +48,7 @@ $Files =
    @{ name = "SQL Server 2014.sql";    version = "12.0.0"  },
    @{ name = "SQL Server 2016.sql";    version = "13.0.0"  },
    @{ name = "SQL Server vNext.sql";   version = "14.0.0"  }
+)
 
 $Queries = @()
 
@@ -146,6 +149,22 @@ foreach ($query in $QueriesSorted)
     $xmlWriter.WriteAttributeString("file",        $query.file.name)
     $xmlWriter.WriteAttributeString("fileVersion", $query.file.version)
     $xmlWriter.WriteAttributeString("level",       $query.level)
+    
+    foreach ($eq in $ExistingQueries.Queries.Query) {
+        if ($eq.file -eq $query.file.name -and $eq.name -eq  $query.name) {
+            Write-Host "Hello world" -ForegroundColor Blue
+            if ($eq.sqlVersionFilter) {
+                $xmlWriter.WriteAttributeString("sqlVersionFilter", $eq.sqlVersionFilter)                
+            }
+            if ($eq.longTextColumns) {
+                $xmlWriter.WriteAttributeString("longTextColumns", $eq.longTextColumns)                
+            }
+            break
+        }
+    }
+
+
+
     $xmlWriter.WriteCData("`r`n$($query.text)`r`n")
 
     $xmlWriter.WriteEndElement();
@@ -155,3 +174,5 @@ $xmlWriter.WriteEndElement();
 $xmlWriter.WriteEndDocument();
 $xmlWriter.Flush();
 $xmlWriter.Close();
+
+"Script completed"
