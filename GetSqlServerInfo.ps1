@@ -36,7 +36,13 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
         $StartTime=(GET-DATE)
         
         $result = RunQuery $QueryText $DatabaseName
-        
+
+        $EndTime=(GET-DATE)        
+        $TimeDiff = ($StartTime-$EndTime).duration()
+        $xmlWriter.WriteAttributeString("executionTime", $TimeDiff)  
+
+        Write-Host "$($TimeDiff): Finished query $QueryName $($Query.file)  $($Query.fileVersion)" -foregroundcolor "green"
+
         foreach ($row in $result) {
            $xmlWriter.WriteStartElement("Row")
            foreach ($column in $row.Table.Columns) {
@@ -44,6 +50,7 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
                $xmlWriter.WriteAttributeString("name",$column)
                $value = $row.Item($column);
                if ($cdataColumns -contains $column) {
+                   $xmlWriter.WriteAttributeString("longText","1")
                    $xmlWriter.WriteCData($value)
                } else {
                    $xmlWriter.WriteString($value)
@@ -52,11 +59,7 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
            }
            $xmlWriter.WriteEndElement();
         }
-        $EndTime=(GET-DATE)
         
-        $TimeDiff = ($StartTime-$EndTime).duration()
-
-        Write-Host "$($TimeDiff): Finished query $QueryName $($Query.file)  $($Query.fileVersion)" -foregroundcolor "green"
     } catch [Exception] {
         $Message = $_.Exception.Message
         Write-Host "Cannot process query $QueryName $($Query.file) : $Message" -foregroundcolor "red"
@@ -164,7 +167,7 @@ $xmlWriter.WriteAttributeString("xsi:noNamespaceSchemaLocation", "SqlServerInfo.
 
 foreach ($query in $queriesToRun.Values | where { $_.level -eq "server" })
 {      
-    $cdataColumns = if ($query.textColumns -eq $null) { @() } else { $query.textColumns.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries) };
+    $cdataColumns = if ($query.longTextColumns -eq $null) { @() } else { $query.longTextColumns.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries) };
     SaveQueryResults $query "master" $xmlWriter $cdataColumns
 }
 
@@ -198,7 +201,7 @@ foreach ($db in $dbList) {
 
         foreach ($query in $queriesToRun.Values | where { $_.level -eq "db" })
         {       
-              $cdataColumns = if ($query.textColumns -eq $null) { @() } else { $query.textColumns.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries) };
+              $cdataColumns = if ($query.longTextColumns -eq $null) { @() } else { $query.longTextColumns.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries) };
               SaveQueryResults $query  $db.name $xmlWriter $cdataColumns
         }
         $xmlWriter.WriteEndElement();
