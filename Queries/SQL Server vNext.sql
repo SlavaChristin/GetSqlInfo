@@ -1055,7 +1055,6 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 -- Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
--- REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text], 
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
