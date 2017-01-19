@@ -32,8 +32,8 @@
               <xs:complexType>
                 <xs:simpleContent>
                   <xs:extension base="xs:string">
-                    <xs:attribute name="name" type="xs:string">
-                    </xs:attribute>
+                    <xs:attribute name="name" type="xs:string" />
+                    <xs:attribute name="longText" type="xs:boolean" />
                   </xs:extension>
                 </xs:simpleContent>
               </xs:complexType>
