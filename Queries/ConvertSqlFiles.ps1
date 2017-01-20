@@ -158,6 +158,9 @@ foreach ($query in $QueriesSorted)
             if ($eq.longTextColumns) {
                 $xmlWriter.WriteAttributeString("longTextColumns", $eq.longTextColumns)                
             }
+            if ($eq.disabled) {
+                $xmlWriter.WriteAttributeString("disabled", $eq.disabled)                
+            }
             break
         }
     }
