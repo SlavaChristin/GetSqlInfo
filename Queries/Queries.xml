@@ -33,7 +33,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 39) (Ad hoc Queries)-->
-    <Query id="39" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="39" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -54,7 +54,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 35) (Ad hoc Queries)-->
-    <Query id="35" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="35" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -78,7 +78,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 40) (Ad hoc Queries)-->
-    <Query id="40" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server"><![CDATA[
+    <Query id="40" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -102,7 +102,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 45) (Ad hoc Queries)-->
-    <Query id="45" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server"><![CDATA[
+    <Query id="45" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -126,7 +126,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 45) (Ad hoc Queries)-->
-    <Query id="45" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server"><![CDATA[
+    <Query id="45" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -150,7 +150,7 @@ ORDER BY cp.size_in_bytes DESC OPTION (RECOMPILE);
 
 
 // Find single-use, ad-hoc and prepared queries that are bloating the plan cache  (Query 45) (Ad hoc Queries)-->
-    <Query id="45" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server"><![CDATA[
+    <Query id="45" name="Ad hoc Queries" description="Find single-use, ad-hoc and prepared queries that are bloating the plan cache" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server" longTextColumns="QueryText"><![CDATA[
 SELECT TOP(50) [text] AS [QueryText], cp.cacheobjtype, cp.objtype, cp.size_in_bytes/1024 AS [Plan Size in KB]
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) 
@@ -8835,7 +8835,7 @@ EXEC sys.xp_readerrorlog 0, 1, N'The tempdb database has';
 
 
 // Get top average elapsed time queries for entire instance (Query 42) (Top Avg Elapsed Time Queries)-->
-    <Query id="42" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server"><![CDATA[
+    <Query id="42" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
 REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
@@ -8861,7 +8861,7 @@ ORDER BY qs.total_elapsed_time/qs.execution_count DESC OPTION (RECOMPILE);
 // Get top average elapsed time queries for entire instance (Query 47) (Top Avg Elapsed Time Queries)
 // drop table #QueryStat
 -->
-    <Query id="47" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server"><![CDATA[
+    <Query id="47" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) 
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
 qs.min_elapsed_time, qs.max_elapsed_time, qs.last_elapsed_time,
@@ -8895,7 +8895,7 @@ CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) AS qp
 
 
 // Get top average elapsed time queries for entire instance (Query 47) (Top Avg Elapsed Time Queries)-->
-    <Query id="47" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server"><![CDATA[
+    <Query id="47" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
 REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
@@ -8919,7 +8919,7 @@ ORDER BY qs.total_elapsed_time/qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Get top average elapsed time queries for entire instance (Query 47) (Top Avg Elapsed Time Queries)-->
-    <Query id="47" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server"><![CDATA[
+    <Query id="47" name="Top Avg Elapsed Time Queries" description="Get top average elapsed time queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
 REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
@@ -9094,7 +9094,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 41) (Top Logical Reads Queries)-->
-    <Query id="41" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server"><![CDATA[
+    <Query id="41" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
@@ -9126,9 +9126,8 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)-->
-    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server"><![CDATA[
+    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
-REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text], 
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
@@ -9160,7 +9159,7 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)-->
-    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server"><![CDATA[
+    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
@@ -9192,7 +9191,7 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)-->
-    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server"><![CDATA[
+    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
