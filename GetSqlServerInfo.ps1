@@ -210,3 +210,6 @@ $xmlWriter.WriteEndElement();
 $xmlWriter.WriteEndDocument();
 $xmlWriter.Flush();
 $xmlWriter.Close();
+
+#Override existing archive if exists
+Compress-Archive -Path $ScriptLocation\results.xml -DestinationPath $ScriptLocation\Results.zip -CompressionLevel Optimal -Force
