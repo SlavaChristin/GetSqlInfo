@@ -4897,7 +4897,7 @@ AND counter_name = N'Memory Grants Pending' OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 42) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="42" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2005.sql" fileVersion="9.0.0" level="db"><![CDATA[
+    <Query id="42" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2005.sql" fileVersion="9.0.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                query_plan, cp.objtype, cp.usecounts
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -4915,7 +4915,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 53) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="53" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="53" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                query_plan, cp.objtype, cp.usecounts
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -4933,7 +4933,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 49) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="49" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="49" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                query_plan, cp.objtype, cp.usecounts
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -4951,7 +4951,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 55) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="55" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2012.sql" fileVersion="11.0.0" level="db"><![CDATA[
+    <Query id="55" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2012.sql" fileVersion="11.0.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                cp.objtype, cp.usecounts, cp.size_in_bytes, query_plan
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -4969,7 +4969,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 61) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="61" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2014.sql" fileVersion="12.0.0" level="db"><![CDATA[
+    <Query id="61" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2014.sql" fileVersion="12.0.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                cp.objtype, cp.usecounts, cp.size_in_bytes, query_plan
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -4987,7 +4987,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 63) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="63" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2016.sql" fileVersion="13.0.0" level="db"><![CDATA[
+    <Query id="63" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server 2016.sql" fileVersion="13.0.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                cp.objtype, cp.usecounts, cp.size_in_bytes, query_plan
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -5005,7 +5005,7 @@ ORDER BY cp.usecounts DESC OPTION (RECOMPILE);
 
 // Find missing index warnings for cached plans in the current database  (Query 63) (Missing Index Warnings)
 // Note: This query could take some time on a busy instance-->
-    <Query id="63" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server vNext.sql" fileVersion="14.0.0" level="db"><![CDATA[
+    <Query id="63" name="Missing Index Warnings" description="Find missing index warnings for cached plans in the current database" file="SQL Server vNext.sql" fileVersion="14.0.0" level="db" longTextColumns="query_plan"><![CDATA[
 SELECT TOP(25) OBJECT_NAME(objectid) AS [ObjectName], 
                cp.objtype, cp.usecounts, cp.size_in_bytes, query_plan
 FROM sys.dm_exec_cached_plans AS cp WITH (NOLOCK)
@@ -5957,7 +5957,7 @@ EXEC sys.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'HARDWARE\DESCRIPTION\Syste
 
 // Top cached queries by Execution Count (SQL Server 2008 R2)  (Query 42) (Query Execution Counts)
 // SQL Server 2008 R2 SP1 and greater only-->
-    <Query id="42" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="42" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008 R2)" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db" longTextColumns="query_text"><![CDATA[
 SELECT TOP (100) qs.execution_count, qs.total_rows, qs.last_rows, qs.min_rows, qs.max_rows,
 qs.last_elapsed_time, qs.min_elapsed_time, qs.max_elapsed_time,
 total_worker_time, total_logical_reads, 
@@ -5977,7 +5977,7 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Top cached queries by Execution Count (SQL Server 2008)  (Query 38) (Query Execution Counts)-->
-    <Query id="38" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="38" name="Query Execution Counts" description="Top cached queries by Execution Count (SQL Server 2008)" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db" longTextColumns="query_text"><![CDATA[
 SELECT TOP (100) qs.execution_count, qs.total_worker_time, qs.total_logical_reads, qs.total_elapsed_time,
 SUBSTRING(qt.TEXT,qs.statement_start_offset/2 +1,
 (CASE WHEN qs.statement_end_offset = -1
@@ -5995,16 +5995,18 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Get most frequently executed queries for this database (Query 45) (Query Execution Counts)-->
-    <Query id="45" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server 2012.sql" fileVersion="11.0.0" level="db"><![CDATA[
-SELECT TOP(50) LEFT(t.[text], 50) AS [Short Query Text], qs.execution_count AS [Execution Count],
+    <Query id="45" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server 2012.sql" fileVersion="11.0.0" level="db" longTextColumns="QueryText,QueryPlan"><![CDATA[
+SELECT TOP(50) 
+qs.execution_count AS [Execution Count],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.total_worker_time AS [Total Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.total_elapsed_time AS [Total Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
-qs.creation_time AS [Creation Time]
---,t.[text] AS [Complete Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -6019,16 +6021,17 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Get most frequently executed queries for this database (Query 51) (Query Execution Counts)-->
-    <Query id="51" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server 2014.sql" fileVersion="12.0.0" level="db"><![CDATA[
-SELECT TOP(50) LEFT(t.[text], 50) AS [Short Query Text], qs.execution_count AS [Execution Count],
+    <Query id="51" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server 2014.sql" fileVersion="12.0.0" level="db" longTextColumns="QueryText,QueryPlan"><![CDATA[
+SELECT TOP(50) qs.execution_count AS [Execution Count],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.total_worker_time AS [Total Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.total_elapsed_time AS [Total Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
-qs.creation_time AS [Creation Time]
---,t.[text] AS [Complete Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -6043,7 +6046,7 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Get most frequently executed queries for this database (Query 53) (Query Execution Counts)-->
-    <Query id="53" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server 2016.sql" fileVersion="13.0.0" level="db"><![CDATA[
+    <Query id="53" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server 2016.sql" fileVersion="13.0.0" level="db" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) LEFT(t.[text], 50) AS [Short Query Text], qs.execution_count AS [Execution Count],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
@@ -6051,8 +6054,9 @@ qs.total_worker_time AS [Total Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.total_elapsed_time AS [Total Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
-qs.creation_time AS [Creation Time]
---,t.[text] AS [Complete Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -6067,16 +6071,18 @@ ORDER BY qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Get most frequently executed queries for this database (Query 53) (Query Execution Counts)-->
-    <Query id="53" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server vNext.sql" fileVersion="14.0.0" level="db"><![CDATA[
-SELECT TOP(50) LEFT(t.[text], 50) AS [Short Query Text], qs.execution_count AS [Execution Count],
+    <Query id="53" name="Query Execution Counts" description="Get most frequently executed queries for this database" file="SQL Server vNext.sql" fileVersion="14.0.0" level="db" longTextColumns="QueryText,QueryPlan"><![CDATA[
+SELECT TOP(50) 
+qs.execution_count AS [Execution Count],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.total_worker_time AS [Total Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.total_elapsed_time AS [Total Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
-qs.creation_time AS [Creation Time]
---,t.[text] AS [Complete Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -8845,7 +8851,7 @@ qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.total_physical_reads/qs.execution_count AS [Avg Physical Reads], 
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time],
 qs.creation_time AS [Creation Time],
-qp.query_plan AS [Query Plan] -- comment out this column if copying results to Excel
+qp.query_plan AS [QueryPlan] -- comment out this column if copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -8879,7 +8885,7 @@ select
 qs.*,
 DB_NAME(t.[dbid]) AS [Database Name],
 t.[text] as [QueryText],
-qp.query_plan AS [Query Plan] 
+qp.query_plan AS [QueryPlan] 
 
 from #QueryStat qs
 CROSS APPLY sys.dm_exec_sql_text(qs.plan_handle) AS t 
@@ -8905,7 +8911,7 @@ qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.total_physical_reads/qs.execution_count AS [Avg Physical Reads], 
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time],
 qs.creation_time AS [Creation Time],
-qp.query_plan AS [Query Plan] -- comment out this column if copying results to Excel
+qp.query_plan AS [QueryPlan] -- comment out this column if copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -8928,8 +8934,8 @@ qs.execution_count AS [Execution Count],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads], 
 qs.total_physical_reads/qs.execution_count AS [Avg Physical Reads], 
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time],
-qs.creation_time AS [Creation Time]
-, qp.query_plan AS [Query Plan] -- comment out this column if copying results to Excel
+qs.creation_time AS [Creation Time], 
+qp.query_plan AS [QueryPlan] -- comment out this column if copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -8942,7 +8948,7 @@ ORDER BY qs.total_elapsed_time/qs.execution_count DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 39) (Top IO Statements)-->
-    <Query id="39" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2005.sql" fileVersion="9.0.0" level="db"><![CDATA[
+    <Query id="39" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2005.sql" fileVersion="9.0.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -8963,7 +8969,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 50) (Top IO Statements)-->
-    <Query id="50" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db"><![CDATA[
+    <Query id="50" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -8984,7 +8990,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 46) (Top IO Statements)-->
-    <Query id="46" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db"><![CDATA[
+    <Query id="46" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2008.sql" fileVersion="10.0.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -9005,7 +9011,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 52) (Top IO Statements)-->
-    <Query id="52" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2012.sql" fileVersion="11.0.0" level="db"><![CDATA[
+    <Query id="52" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2012.sql" fileVersion="11.0.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -9026,7 +9032,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 58) (Top IO Statements)-->
-    <Query id="58" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2014.sql" fileVersion="12.0.0" level="db"><![CDATA[
+    <Query id="58" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2014.sql" fileVersion="12.0.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -9047,7 +9053,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 60) (Top IO Statements)-->
-    <Query id="60" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2016.sql" fileVersion="13.0.0" level="db"><![CDATA[
+    <Query id="60" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server 2016.sql" fileVersion="13.0.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -9068,7 +9074,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Lists the top statements by average input/output usage for the current database  (Query 60) (Top IO Statements)-->
-    <Query id="60" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server vNext.sql" fileVersion="14.0.0" level="db"><![CDATA[
+    <Query id="60" name="Top IO Statements" description="Lists the top statements by average input/output usage for the current database" file="SQL Server vNext.sql" fileVersion="14.0.0" level="db" longTextColumns="Query Text"><![CDATA[
 SELECT TOP(50) OBJECT_NAME(qt.objectid, dbid) AS [SP Name],
 (qs.total_logical_reads + qs.total_logical_writes) /qs.execution_count AS [Avg IO], qs.execution_count AS [Execution Count],
 SUBSTRING(qt.[text],qs.statement_start_offset/2, 
@@ -9094,7 +9100,7 @@ ORDER BY [Avg IO] DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 41) (Top Logical Reads Queries)-->
-    <Query id="41" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
+    <Query id="41" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
@@ -9107,8 +9113,8 @@ qs.min_elapsed_time AS [Min Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 qs.max_elapsed_time AS [Max Elapsed Time],
 qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time],
-t.[text] AS [Complete Query Text], 
-qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9126,7 +9132,7 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)-->
-    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
+    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
@@ -9140,8 +9146,8 @@ qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
 qs.max_elapsed_time AS [Max Elapsed Time],
 qs.execution_count AS [Execution Count],
 qs.creation_time AS [Creation Time],
-t.[text] AS [Complete Query Text], 
-qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9159,7 +9165,7 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)-->
-    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
+    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
@@ -9172,8 +9178,8 @@ qs.min_elapsed_time AS [Min Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 qs.max_elapsed_time AS [Max Elapsed Time],
 qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time],
-t.[text] AS [Complete Query Text],
-qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+t.[text] AS [QueryText],
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9191,7 +9197,7 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 // Get top total logical reads queries for entire instance (Query 46) (Top Logical Reads Queries)-->
-    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server" longTextColumns="Complete Query Text,Query Plan"><![CDATA[
+    <Query id="46" name="Top Logical Reads Queries" description="Get top total logical reads queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.min_logical_reads AS [Min Logical Reads],
@@ -9204,8 +9210,8 @@ qs.min_elapsed_time AS [Min Elapsed Time],
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 qs.max_elapsed_time AS [Max Elapsed Time],
 qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time],
-t.[text] AS [Complete Query Text], 
-qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9646,7 +9652,7 @@ OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 33) (Top Worker Time Queries)-->
-    <Query id="33" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server"><![CDATA[
+    <Query id="33" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008 R2.sql" fileVersion="10.50.0" level="server" longTextColumns="Query Text,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], t.[text] AS [Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
@@ -9654,7 +9660,7 @@ qs.max_worker_time AS [Max Worker Time], qs.execution_count AS [Execution Count]
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads], 
 qs.total_physical_reads/qs.execution_count AS [Avg Physical Reads], qs.creation_time AS [Creation Time]
-, qp.query_plan AS [Query Plan] -- comment out this column if copying results to Excel
+, qp.query_plan AS [QueryPlan] -- comment out this column if copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9667,7 +9673,7 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 29) (Top Worker Time Queries)-->
-    <Query id="29" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server"><![CDATA[
+    <Query id="29" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2008.sql" fileVersion="10.0.0" level="server" longTextColumns="Query Text,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], t.[text] AS [Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
@@ -9675,7 +9681,7 @@ qs.max_worker_time AS [Max Worker Time], qs.execution_count AS [Execution Count]
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time], 
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads], 
 qs.total_physical_reads/qs.execution_count AS [Avg Physical Reads], qs.creation_time AS [Creation Time]
-, qp.query_plan AS [Query Plan] -- comment out this column if copying results to Excel
+, qp.query_plan AS [QueryPlan] -- comment out this column if copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9689,9 +9695,8 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 36) (Top Worker Time Queries)-->
-    <Query id="36" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server"><![CDATA[
+    <Query id="36" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2012.sql" fileVersion="11.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
-REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.max_worker_time AS [Max Worker Time], 
@@ -9701,8 +9706,10 @@ qs.max_elapsed_time AS [Max Elapsed Time],
 qs.min_logical_reads AS [Min Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.max_logical_reads AS [Max Logical Reads], 
-qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time]
---,t.[text] AS [Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.execution_count AS [Execution Count], 
+qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9716,9 +9723,8 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 41) (Top Worker Time Queries)-->
-    <Query id="41" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server"><![CDATA[
+    <Query id="41" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2014.sql" fileVersion="12.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
-REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.max_worker_time AS [Max Worker Time], 
@@ -9728,8 +9734,9 @@ qs.max_elapsed_time AS [Max Elapsed Time],
 qs.min_logical_reads AS [Min Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.max_logical_reads AS [Max Logical Reads], 
-qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time]
---,t.[text] AS [Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9743,9 +9750,8 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 41) (Top Worker Time Queries)-->
-    <Query id="41" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server"><![CDATA[
+    <Query id="41" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server 2016.sql" fileVersion="13.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
-REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
 qs.total_worker_time/qs.execution_count AS [Avg Worker Time], 
 qs.max_worker_time AS [Max Worker Time], 
@@ -9755,8 +9761,9 @@ qs.max_elapsed_time AS [Max Elapsed Time],
 qs.min_logical_reads AS [Min Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.max_logical_reads AS [Max Logical Reads], 
-qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time]
---,t.[text] AS [Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText], 
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 
@@ -9770,7 +9777,7 @@ ORDER BY qs.total_worker_time DESC OPTION (RECOMPILE);
 
 
 // Get top total worker time queries for entire instance (Query 41) (Top Worker Time Queries)-->
-    <Query id="41" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server"><![CDATA[
+    <Query id="41" name="Top Worker Time Queries" description="Get top total worker time queries for entire instance" file="SQL Server vNext.sql" fileVersion="14.0.0" level="server" longTextColumns="QueryText,QueryPlan"><![CDATA[
 SELECT TOP(50) DB_NAME(t.[dbid]) AS [Database Name], 
 REPLACE(REPLACE(LEFT(t.[text], 255), CHAR(10),''), CHAR(13),'') AS [Short Query Text],  
 qs.total_worker_time AS [Total Worker Time], qs.min_worker_time AS [Min Worker Time],
@@ -9782,8 +9789,9 @@ qs.max_elapsed_time AS [Max Elapsed Time],
 qs.min_logical_reads AS [Min Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
 qs.max_logical_reads AS [Max Logical Reads], 
-qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time]
---,t.[text] AS [Query Text], qp.query_plan AS [Query Plan] -- uncomment out these columns if not copying results to Excel
+qs.execution_count AS [Execution Count], qs.creation_time AS [Creation Time],
+t.[text] AS [QueryText],
+qp.query_plan AS [QueryPlan] -- uncomment out these columns if not copying results to Excel
 FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(plan_handle) AS qp 

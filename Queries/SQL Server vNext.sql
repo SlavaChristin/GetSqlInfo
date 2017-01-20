@@ -1200,7 +1200,6 @@ ON vfs.[file_id]= df.[file_id] OPTION (RECOMPILE);
 
 -- Get most frequently executed queries for this database (Query 53) (Query Execution Counts)
 SELECT TOP(50) 
--- LEFT(t.[text], 50) AS [Short Query Text], 
 qs.execution_count AS [Execution Count],
 qs.total_logical_reads AS [Total Logical Reads],
 qs.total_logical_reads/qs.execution_count AS [Avg Logical Reads],
