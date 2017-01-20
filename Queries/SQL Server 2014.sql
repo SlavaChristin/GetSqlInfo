@@ -1051,7 +1051,6 @@ ORDER BY qs.total_logical_reads DESC OPTION (RECOMPILE);
 
 
 -- Get top average elapsed time queries for entire instance (Query 47) (Top Avg Elapsed Time Queries)
--- drop table #QueryStat
 
 SELECT TOP(50) 
 qs.total_elapsed_time/qs.execution_count AS [Avg Elapsed Time],
@@ -1067,7 +1066,15 @@ FROM sys.dm_exec_query_stats AS qs WITH (NOLOCK)
 ORDER BY qs.total_elapsed_time/qs.execution_count DESC OPTION (RECOMPILE);
 
 select 
-qs.*,
+qs.[Avg Elapsed Time],
+qs.min_elapsed_time,
+qs.max_elapsed_time,
+qs.last_elapsed_time,
+qs.[Execution Count],
+qs.[Avg Logical Reads],
+qs.[Avg Physical Reads],
+qs.[Avg Worker Time],
+qs.[Creation Time],
 DB_NAME(t.[dbid]) AS [Database Name],
 t.[text] as [QueryText],
 qp.query_plan AS [QueryPlan] 
@@ -1075,8 +1082,6 @@ qp.query_plan AS [QueryPlan]
 from #QueryStat qs
 CROSS APPLY sys.dm_exec_sql_text(qs.plan_handle) AS t 
 CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) AS qp
-
-
 ------
 
 -- Helps you find the highest average elapsed time queries across the entire instance
