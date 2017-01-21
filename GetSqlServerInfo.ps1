@@ -71,6 +71,9 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
     $xmlWriter.WriteEndElement();
 }
 
+# >0 versionA > versionB
+# =0 versionA = versionB
+# <0 versionA < versionB
 function compareSqlVersions($versionA, $versionB) {
     $a1,$a2,$a3,$a4 = $versionA.split('.', 4)
     $b1,$b2,$b3,$b4 = $versionB.split('.', 4)
@@ -108,6 +111,45 @@ function compareSqlVersions($versionA, $versionB) {
     return 0;
 }
 
+# return minumum acceptable version or $null
+function isInRange($sqlVersionFilter, $version){
+    $ranges = $sqlVersionFilter.Split(",",[System.StringSplitOptions]::RemoveEmptyEntries);
+    $minVersion = $null;
+    foreach ($r in $ranges){
+        $indexRange = $r.IndexOf('-');
+        if ($indexRange -ge 0){
+            # range version
+            $r2 = $r.Split("-",2);
+            $result1 = compareSqlVersions $version $r2[0]
+            $result2 = compareSqlVersions $r2[1] $version
+            if ($result1 -ge 0 -and $result2 -ge 0){
+                if (($minVersion -eq $null) -or (compareSqlVersions $r2[0] $minVersion -lt 0)){
+                    $minVersion = $r2[0];
+                }
+            }
+        } elseif ($r.EndsWith("+")) {
+            # minimal version
+            $r = $r.SubString(0,$r.length-1)
+            $result = compareSqlVersions $version $r
+            if ($result -ge 0){
+                if (($minVersion -eq $null) -or (compareSqlVersions $r $minVersion -lt 0)){
+                    $minVersion = $r;
+                }
+            }
+        } else {
+            # single version
+            $result = compareSqlVersions $version $r
+            if ($result -eq 0){
+                if (($minVersion -eq $null) -or (compareSqlVersions $r $minVersion -lt 0)){
+                    $minVersion = $r;
+                }
+            }
+        }
+    }
+    return $minVersion;
+}
+
+
 #if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
 #    Add-PsSnapin SqlServerCmdletSnapin100
 #}
@@ -131,13 +173,17 @@ Write-Host "Server version is $serverVersion"
 $queriesToRun = @{}
 $queriesActiveVersion = @{}
 
-foreach ($query in $Queries.Queries.Query | where { (compareSqlVersions $serverVersion  $_.fileVersion)  -ge 0 })
+foreach ($query in $Queries.Queries.Query | where { (isInRange $_.sqlVersionFilter $serverVersion) -ne $null })
 {
     if ($query.disabled -ne "1") {
         if (!$queriesToRun[$query.name]) {
             $queriesToRun[$query.name] = $query
-        } elseif ((compareSqlVersions $query.fileVersion $queriesToRun[$query.name].fileVersion)  -ge 0) {
-            $queriesToRun[$query.name] = $query
+        } else {
+            $minCurrent = isInRange $query.sqlVersionFilter $serverVersion 
+            $minSaved   = isInRange $queriesToRun[$query.name].sqlVersionFilter $serverVersion
+            if ((compareSqlVersions $minCurrent $minSaved)  -gt 0) {
+                $queriesToRun[$query.name] = $query
+            }
         }
     } else {
         Write-Host "Ignoring disabled query $($query.name) from $($query.file)" -ForegroundColor Yellow
