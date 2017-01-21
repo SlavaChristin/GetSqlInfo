@@ -50,7 +50,7 @@ function SaveQueryResults($Query, $DatabaseName, $xmlWriter, $cdataColumns)
                $xmlWriter.WriteAttributeString("name",$column)
                $value = $row.Item($column);
                if ($cdataColumns -contains $column) {
-                   $xmlWriter.WriteAttributeString("longText","1")
+                   $xmlWriter.WriteAttributeString("longText", "1")
                    $xmlWriter.WriteCData($value)
                } else {
                    $xmlWriter.WriteString($value)
@@ -133,18 +133,16 @@ $queriesActiveVersion = @{}
 
 foreach ($query in $Queries.Queries.Query | where { (compareSqlVersions $serverVersion  $_.fileVersion)  -ge 0 })
 {
-    if (!$queriesToRun[$query.name]) {
-        $queriesToRun[$query.name] = $query
-    } elseif ((compareSqlVersions $query.fileVersion $queriesToRun[$query.name].fileVersion)  -ge 0) {
-        $queriesToRun[$query.name] = $query
+    if ($query.disabled -ne "1") {
+        if (!$queriesToRun[$query.name]) {
+            $queriesToRun[$query.name] = $query
+        } elseif ((compareSqlVersions $query.fileVersion $queriesToRun[$query.name].fileVersion)  -ge 0) {
+            $queriesToRun[$query.name] = $query
+        }
+    } else {
+        Write-Host "Ignoring disabled query $($query.name) from $($query.file)" -ForegroundColor Yellow
     }
-        
 }
-
-# foreach ($query in $queriesToRun.Values) 
-#{
-#    Write-Host "$($query.name) $($query.minVersion)"
-#}
 
 
 $date = Get-Date -Format s
@@ -212,3 +210,6 @@ $xmlWriter.WriteEndElement();
 $xmlWriter.WriteEndDocument();
 $xmlWriter.Flush();
 $xmlWriter.Close();
+
+#Override existing archive if exists
+Compress-Archive -Path $ScriptLocation\results.xml -DestinationPath $ScriptLocation\Results.zip -CompressionLevel Optimal -Force
