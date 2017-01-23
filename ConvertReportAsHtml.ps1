@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+    
 Add-Type -AssemblyName System.Web      
 
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
