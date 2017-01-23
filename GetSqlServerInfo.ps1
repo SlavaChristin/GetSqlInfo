@@ -1,5 +1,5 @@
 param(
-    [string]$Server               = 'OPSDEPLOY-13',
+    [string]$Server               = 'localhost',
     [string]$Username             = $null,
     [string]$Password             = $null,
     [string]$IgnoreDatabases      = $null,
@@ -173,20 +173,35 @@ Write-Host "Server version is $serverVersion"
 $queriesToRun = @{}
 $queriesActiveVersion = @{}
 
-foreach ($query in $Queries.Queries.Query | where { (isInRange $_.sqlVersionFilter $serverVersion) -ne $null })
+foreach ($query in $Queries.Queries.Query)
 {
-    if ($query.disabled -ne "1") {
-        if (!$queriesToRun[$query.name]) {
-            $queriesToRun[$query.name] = $query
-        } else {
-            $minCurrent = isInRange $query.sqlVersionFilter $serverVersion 
-            $minSaved   = isInRange $queriesToRun[$query.name].sqlVersionFilter $serverVersion
-            if ((compareSqlVersions $minCurrent $minSaved)  -gt 0) {
+    $queryVersionFilter = $query.sqlVersionFilter
+    if (!$queryVersionFilter) 
+    { 
+        $queryVersionFilter = $query.fileVersion + "+"
+    }
+    
+    $minCurrent = isInRange $queryVersionFilter $serverVersion
+    
+    if ($minCurrent)  #query is appropriate for current version of sql
+    { 
+        if ($query.disabled -ne "1") 
+        {
+            if (!$queriesToRun[$query.name]) 
+            {
                 $queriesToRun[$query.name] = $query
+                $queriesActiveVersion[$query.name] = $minCurrent
             }
+            else 
+            {
+                if ((compareSqlVersions $minCurrent $queriesActiveVersion[$query.name])  -gt 0) {
+                    $queriesToRun[$query.name] = $query
+                    $queriesActiveVersion[$query.name] = $minCurrent
+                }
+            }
+        } else {
+            Write-Host "Ignoring disabled query $($query.name) from $($query.file)" -ForegroundColor Yellow
         }
-    } else {
-        Write-Host "Ignoring disabled query $($query.name) from $($query.file)" -ForegroundColor Yellow
     }
 }
 
@@ -232,9 +247,9 @@ $query =
 $dbList = RunQuery $query "master"
 
 foreach ($db in $dbList) {  
-    $appVersion= RunQuery "if object_id('DatabaseVersionInformation') is not null  select Version, DatabaseVersion, DatabaseID from DatabaseVersionInformation" $db.name
+    # $appVersion= RunQuery "if object_id('DatabaseVersionInformation') is not null  select Version, DatabaseVersion, DatabaseID from DatabaseVersionInformation" $db.name
        
-    if ($appVersion.Version -and $appVersion.DatabaseVersion) {
+    # if ($appVersion.Version -and $appVersion.DatabaseVersion) {
     
         $xmlWriter.WriteStartElement("DatabaseInfo")
         $xmlWriter.WriteAttributeString("name", $db.name)
@@ -249,7 +264,7 @@ foreach ($db in $dbList) {
               SaveQueryResults $query  $db.name $xmlWriter $cdataColumns
         }
         $xmlWriter.WriteEndElement();
-    }
+    #}
 }
 
 $xmlWriter.WriteEndElement();
