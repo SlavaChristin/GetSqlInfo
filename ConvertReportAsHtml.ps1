@@ -177,5 +177,5 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header)
 Remove-Item "$targetDir\*"
 
 $xml = [System.Xml.XmlReader]::Create("$PSScriptRoot\results.xml")
-processQueryResuls $xml "$targetDir\report.html" "Server report"
+processQueryResuls $xml "$targetDir\_report.html" "Server report"
 $xml.close()
