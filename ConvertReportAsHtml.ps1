@@ -1,20 +1,35 @@
-#$xslt = new-object system.xml.xsl.xslcompiledtransform
-
 Add-Type -AssemblyName System.Web      
 
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
-
-#$xsltFile = "$PSScriptRoot\Transform.xslt"
-
-#$xsltFile
-#$xslt.load($xsltFile)
-#$xslt.Transform("$PSScriptRoot\Results2.xml", "$PSScriptRoot\report.html")
-
 $targetDir = "$PSScriptRoot\report";
 
 if (-Not (Test-Path -Path $targetDir))
 {
     New-Item -ItemType directory -Path $targetDir
+}
+
+function writeValue($html, $columnName, $value, $longText) 
+{
+    $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Td);
+    if ($longText){
+        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
+                            
+        $html.AddAttribute([System.Web.UI.HtmlTextWriterAttribute]::Href, "./detail-$baseName-$columnName-$rowIndex.txt");
+        $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::A);
+        $html.WriteEncodedText("show");
+        $html.RenderEndTag();
+                                
+        $w = [System.IO.StreamWriter] "$targetDir/detail-$baseName-$columnName-$rowIndex.txt"
+        $w.Write($value);
+        $w.Flush();
+        $w.Close();
+    } 
+    else
+    {
+        $html.WriteEncodedText($value);
+    }
+    $html.RenderEndTag();
+
 }
 
 
@@ -31,6 +46,7 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
     
     $rowIndex = 0
     $level = 0
+    $firstRow = @()
     :main
     while ($xml.read())
     {
@@ -39,17 +55,31 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
             ([System.Xml.XmlNodeType]::EndElement) {
                 switch($xml.Name)
                 {
-                    "Row"{
+                    "Row"
+                    {
                         $html.RenderEndTag();
-                        $rowIndex++
+                        if ($rowIndex -eq 0) 
+                        {
+                            $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Tr);
+                            foreach ($row in $firstRow) {
+                                writeValue $html $row.columnName $row.value $row.longText
+
+
+                            }
+                            #$firstRow += @{ columnName=$columnName;longText=$longText; value=$value }
+                            $html.RenderEndTag();
+                        }
+                        $rowIndex++;
                         break;
                     }
-                    "QueryResults"{
+                    "QueryResults"
+                    {
                         $html.RenderEndTag();
                         break;
                     }
                 }
-                if ($level -eq 0){
+                if ($level -eq 0)
+                {
                     break main;
                 }
                 break;
@@ -59,10 +89,12 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
                  $level++;
                  switch($xml.Name)
                  {
-                     "SqlServerInfo" { 
+                     "SqlServerInfo" 
+                     { 
                         break;
                      }
-                     "QueryResults" {
+                     "QueryResults" 
+                     {
                         $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::H2);
                         $html.Write($xml.GetAttribute("name"));
                         $html.RenderEndTag();
@@ -71,9 +103,12 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
                         $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Table);
                         
                         $rowIndex = 0
+                        $firstRow = @()
+
                         break;
                      }
-                     "DatabaseInfo"{
+                     "DatabaseInfo"
+                     {
                         $html.writeLine("<br/>");
                         
                         $dbName = $xml.GetAttribute("name")
@@ -86,42 +121,32 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
                         processQueryResuls $xml "$targetDir/database-$dbName.html" "Database $dbName"
                         break;
                      }
-                     "Row"{
-                        if ($rowIndex -eq 0){
+                     "Row" 
+                     {
+                        if ($rowIndex -eq 0) {
                             $html.AddAttribute("bgcolor", "aqua");
                         } 
                         $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Tr);
                         break;
                      }
-                     "Property"{
+                     "Property"
+                     {
                         $columnName = $xml.GetAttribute("name");
-                        if ($rowIndex -eq 0){
-                        #<th style="text-align:Left"><xsl:value-of select="@name" /></th>
+                        $longText = $xml.GetAttribute("longText") -eq "1"
+                        $value = $xml.ReadString();
+
+                        if ($rowIndex -eq 0) 
+                        {
                             $html.AddAttribute("style", "text-align:Left");
                             $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Th);
                             $html.WriteEncodedText($columnName);
                             $html.RenderEndTag();
-                        } else {
-                            $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Td);
-                            $longText = $xml.GetAttribute("longText") -eq "1"
-                            
-                            $value = $xml.ReadString();
-                            if ($value.length -gt 128 -and $longText){
-                                $baseName = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
-                            
-                                $html.AddAttribute([System.Web.UI.HtmlTextWriterAttribute]::Href, "./detail-$baseName-$columnName-$rowIndex.txt");
-                                $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::A);
-                                $html.WriteEncodedText($value.SubString(0,32)+"...");
-                                $html.RenderEndTag();
-                                
-                                $w = [System.IO.StreamWriter] "$targetDir/detail-$baseName-$columnName-$rowIndex.txt"
-                                $w.Write($value)
-                                $w.Flush()
-                                $w.Close();
-                            } else {
-                                $html.WriteEncodedText($value);
-                            }
-                            $html.RenderEndTag();
+
+                            $firstRow += @{ columnName=$columnName;longText=$longText; value=$value }
+                        } 
+                        else 
+                        {
+                            writeValue $html $columnName $value $longText
                         }
                         break;
                      }
@@ -139,8 +164,6 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
 
 Remove-Item "$targetDir\*"
 
-$xml = [System.Xml.XmlReader]::Create("$PSScriptRoot\Results.xml")
+$xml = [System.Xml.XmlReader]::Create("$PSScriptRoot\results.xml")
 processQueryResuls $xml "$targetDir\report.html" "Server report"
 $xml.close()
-
-
