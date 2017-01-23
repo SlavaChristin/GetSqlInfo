@@ -4,6 +4,7 @@ Add-Type -AssemblyName System.Web
 
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $targetDir = "$PSScriptRoot\report";
+$detailIndex = 0
 
 if (-Not (Test-Path -Path $targetDir))
 {
@@ -13,15 +14,17 @@ if (-Not (Test-Path -Path $targetDir))
 function writeValue($html, $columnName, $value, $longText) 
 {
     $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Td);
-    if ($longText){
-        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
-                            
-        $html.AddAttribute([System.Web.UI.HtmlTextWriterAttribute]::Href, "./detail-$baseName-$columnName-$rowIndex.txt");
+    if ($longText)
+    {                    
+        $global:detailIndex++;
+
+        $html.AddAttribute([System.Web.UI.HtmlTextWriterAttribute]::Href, "./detail-$detailIndex.txt");
         $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::A);
         $html.WriteEncodedText("show");
         $html.RenderEndTag();
                                 
-        $w = [System.IO.StreamWriter] "$targetDir/detail-$baseName-$columnName-$rowIndex.txt"
+        $w = [System.IO.StreamWriter] "$targetDir/detail-$detailIndex.txt"
+
         $w.Write($value);
         $w.Flush();
         $w.Close();
@@ -35,10 +38,11 @@ function writeValue($html, $columnName, $value, $longText)
 }
 
 
-function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
-    # new-object System.IO.StringWriter 
-    $stream = [System.IO.StreamWriter] $fileName 
-    $html = new-object System.Web.UI.HtmlTextWriter($stream)
+function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) 
+{
+    $local:stream = [System.IO.StreamWriter] $fileName
+
+    $local:html = new-object System.Web.UI.HtmlTextWriter($stream)
     $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Html);
     $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Head) 
     $html.WriteLine("<META http-equiv=`"Content-Type`" content=`"text/html; charset=utf-8`"><script language=`"javascript`" type=`"text/javascript`"></script>")
@@ -63,12 +67,10 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
                         if ($rowIndex -eq 0) 
                         {
                             $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Tr);
-                            foreach ($row in $firstRow) {
+                            foreach ($row in $firstRow) 
+                            {
                                 writeValue $html $row.columnName $row.value $row.longText
-
-
                             }
-                            #$firstRow += @{ columnName=$columnName;longText=$longText; value=$value }
                             $html.RenderEndTag();
                         }
                         $rowIndex++;
@@ -98,6 +100,10 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
                      "QueryResults" 
                      {
                         $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::H2);
+                        if ($dbName) {
+                            $html.Write($dbName);
+                            $html.Write('::');                                
+                        }
                         $html.Write($xml.GetAttribute("name"));
                         $html.RenderEndTag();
                         
@@ -114,13 +120,17 @@ function processQueryResuls([System.Xml.XmlReader] $xml, $fileName, $header) {
                         $html.writeLine("<br/>");
                         
                         $dbName = $xml.GetAttribute("name")
-                        
-                        $html.write("Database ");
-                        $html.AddAttribute([System.Web.UI.HtmlTextWriterAttribute]::Href, "./database-$dbName.html");
-                        $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::A);
-                        $html.write($dbName);
+                        $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::H1);
+                        $html.write("Database $dbName");
                         $html.RenderEndTag();
-                        processQueryResuls $xml "$targetDir/database-$dbName.html" "Database $dbName"
+                        break;
+                     }
+                     "Message"
+                     {
+                        $html.RenderBeginTag([System.Web.UI.HtmlTextWriterTag]::Span);
+                        $html.Write('<strong style="color:red">');
+                        $html.WriteEncodedText("Error: $($xml.ReadString())" );
+                        $html.Write('</strong>');
                         break;
                      }
                      "Row" 
